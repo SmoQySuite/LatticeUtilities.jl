@@ -152,7 +152,7 @@ function Δl_to_Δr!(Δr::AbstractVector{T}, Δl::AbstractVector{Int}, s₁::Int
     for d in in 1:D
         @views @. Δr += Δl[d] * lattice_vecs[:,d]
     end
-    @views Δr += basis_vecs[:,s₂] - basis_vecs[:,s₁]
+    @views @. Δr += basis_vecs[:,s₂] - basis_vecs[:,s₁]
 
     return nothing
 end
