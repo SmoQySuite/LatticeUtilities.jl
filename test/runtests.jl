@@ -1,3 +1,5 @@
-using Test
+push!(LOAD_PATH,"../src/")
 
-@test true
+using Test, Documenter, LatticeUtilities
+
+doctest(LatticeUtilities)

@@ -1,6 +1,7 @@
 module LatticeUtilities
 
 using LinearAlgebra
+using Printf
 
 include("UnitCell.jl")
 export UnitCell

@@ -29,10 +29,37 @@ struct UnitCell{T<:AbstractFloat}
 end
 
 """
-    UnitCell(lattice_vecs::Matrix{T}, basis_vecs::Matrix{T})
-        where {T<:AbstractFloat}
+    UnitCell(lattice_vecs::Matrix{T}, basis_vecs::Matrix{T}) where {T<:AbstractFloat}
 
 Constrcuts a `UnitCell`.
+
+# Example
+Define the unit cell for a Kagome lattice.
+```jldoctest; output = false
+lattice_vecs = [1.0  1/2;
+                0.0 √3/2]
+basis_vecs   = [0.0 1/2  1/4;
+                0.0 0.0 √3/4]
+unit_cell    = UnitCell(lattice_vecs, basis_vecs)
+
+# output
+
+UnitCell{Float64}:
+- D = 2
+- n = 3
+- lattice_vecs =
+2×2 Matrix{Float64}:
+ 6.28319  -3.6276
+ 0.0       7.2552
+- reciprocal_vecs =
+2×2 Matrix{Float64}:
+ 1.0  0.5
+ 0.0  0.866025
+- basis_vecs =
+2×3 Matrix{Float64}:
+ 0.0  0.5  0.25
+ 0.0  0.0  0.433013
+```
 """
 function UnitCell(lattice_vecs::Matrix{T}, basis_vecs::Matrix{T}) where {T<:AbstractFloat}
 
@@ -58,12 +85,61 @@ end
         where {T<:AbstractFloat}
 
 Constrcuts a `UnitCell`.
+
+# Example
+Define the unit cell for a Kagome lattice.
+```jldoctest; output = false
+lattice_vecs = [ [1.0, 0.0], [1/2, √3/2] ]
+basis_vecs   = [ [0.0, 0.0], [1/2, 0.0], [1/4, √3/4] ]
+unit_cell    = UnitCell(lattice_vecs, basis_vecs)
+
+# output
+
+UnitCell{Float64}:
+- D = 2
+- n = 3
+- lattice_vecs =
+2×2 Matrix{Float64}:
+ 6.28319  -3.6276
+ 0.0       7.2552
+- reciprocal_vecs =
+2×2 Matrix{Float64}:
+ 1.0  0.5
+ 0.0  0.866025
+- basis_vecs =
+2×3 Matrix{Float64}:
+ 0.0  0.5  0.25
+ 0.0  0.0  0.433013
+```
 """
 function UnitCell(lattice_vecs::AbstractVector{Vector{T}}, basis_vecs::AbstractVector{Vector{T}}) where {T<:AbstractFloat}
 
     return UnitCell(hcat(lattice_vecs...), hcat(basis_vecs...))
 end
 
+"""
+    Base.show(io::IO, uc::UnitCell{T}) where {T}
+    Base.show(io::IO, ::MIME"text/plain", uc::UnitCell{T}) where{T}
+
+Show unit cell.
+"""
+Base.show(io::IO, uc::UnitCell{T}) where {T} = print(io,"UnitCell{$T}(D=$(uc.D), n=$(uc.n))")
+function Base.show(io::IO, ::MIME"text/plain", uc::UnitCell{T}) where{T}
+
+    (; D, n, lattice_vecs, reciprocal_vecs, basis_vecs) = uc
+    print(io, "UnitCell{$T}:\n")
+    print(io,"- D = $D\n")
+    print(io,"- n = $n\n")
+    print(io,"- lattice_vecs =\n")
+    show(io,"text/plain",reciprocal_vecs)
+    print(io,"\n")
+    print(io,"- reciprocal_vecs =\n")
+    show(io,"text/plain",lattice_vecs)
+    print(io,"\n")
+    print(io,"- basis_vecs =\n")
+    show(io,"text/plain",basis_vecs)
+    return nothing
+end
 
 """
     get_r!(r::AbstractVector{T}, l::AbstractVector{Int}, unit_cell::UnitCell{T})

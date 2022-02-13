@@ -1,15 +1,14 @@
-using Documenter
-using LatticeUtilities
-
 push!(LOAD_PATH,"../src/")
+
+using Documenter, LatticeUtilities
+
+DocMeta.setdocmeta!(LatticeUtilities, :DocTestSetup, :(using LatticeUtilities); recursive=true)
 
 makedocs(
     sitename = "LatticeUtilities",
-    pages = [
-        "index.md" 
-    ],
     format = Documenter.HTML(),
-    modules = [LatticeUtilities]
+    modules = [LatticeUtilities],
+    doctest = true
 )
 
 # Documenter can also automatically deploy documentation to gh-pages.
