@@ -6,9 +6,9 @@ DocMeta.setdocmeta!(LatticeUtilities, :DocTestSetup, :(using LatticeUtilities); 
 
 makedocs(
     sitename = "LatticeUtilities",
-    format = Documenter.HTML(),
-    modules = [LatticeUtilities],
-    doctest = true
+    format   = Documenter.HTML(),
+    modules  = [LatticeUtilities],
+    doctest  = true
 )
 
 # Documenter can also automatically deploy documentation to gh-pages.
