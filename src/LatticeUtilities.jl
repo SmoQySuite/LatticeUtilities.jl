@@ -15,10 +15,11 @@ export valid_location, pbc!
 export unitcell_to_loc!, unitcell_to_loc, loc_to_unitcell
 
 include("utilities.jl")
-export get_Nₛ, valid_site
+export get_num_sites, valid_site
 export site_to_unitcell, site_to_orbital
 export site_to_loc!, site_to_loc
 export loc_to_site, site_to_site
-export calc_k_points
+export calc_k_point!, calc_k_point
+export calc_k_points!, calc_k_points
 
 end # module

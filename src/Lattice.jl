@@ -117,17 +117,17 @@ end
 """
     unitcell_to_loc!(loc::AbstractVector{Int},u::Int,lattice::Lattice)
 
-Calculate the location `loc` of a unit cell `u`.
+Calculate the location `l` of a unit cell `u`.
 """
-function unitcell_to_loc!(loc::AbstractVector{Int},u::Int,lattice::Lattice)
+function unitcell_to_loc!(l::AbstractVector{Int},u::Int,lattice::Lattice)
 
     (; D, N, L) = lattice
-    @assert length(loc) == D
+    @assert length(l) == D
 
     for d in D:-1:1
-        N      = N ÷ L[d]
-        loc[d] = u ÷ N
-        u      = u % N
+        N    = N ÷ L[d]
+        l[d] = u ÷ N
+        u    = u % N
     end
 
     return nothing
@@ -136,31 +136,31 @@ end
 """
     unitcell_to_loc(u::Int,lattice::Lattice)
 
-Return the location `loc` of a unit cell `u`.
+Return the location `l` of a unit cell `u`.
 """
 function unitcell_to_loc(u::Int,lattice::Lattice)
 
-    loc = zeros(Int,lattice.D)
-    unitcell_to_loc!(loc,u,lattice)
-    return loc
+    l = zeros(Int,lattice.D)
+    unitcell_to_loc!(l,u,lattice)
+    return l
 end
 
 
 """
     loc_to_unitcell(loc::AbstractVector{Int},lattice::Lattice)
 
-Return the unit cell `u` found at location `loc` in the lattice.
+Return the unit cell `u` found at location `l` in the lattice.
 """
-function loc_to_unitcell(loc::AbstractVector{Int},lattice::Lattice)
+function loc_to_unitcell(l::AbstractVector{Int},lattice::Lattice)
 
     (; D, N, L) = lattice
-    @assert length(loc) == D
-    @assert valid_location(loc,lattice)
+    @assert length(l) == D
+    @assert valid_location(l,lattice)
 
     u = 0
     for d in D:-1:1
         N = N ÷ L[d]
-        u = u + N * (u ÷ N)
+        u = u + N * l[d]
     end
 
     return u

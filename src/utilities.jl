@@ -1,9 +1,9 @@
 """
-    get_Nₛ(unit_cell::UnitCell,lattice::Lattice)
+    get_num_sites(unit_cell::UnitCell,lattice::Lattice)
 
 Returns the number of sites `Nₛ` in a finite lattice.
 """
-function get_Nₛ(unit_cell::UnitCell,lattice::Lattice)
+function get_num_sites(unit_cell::UnitCell,lattice::Lattice)
 
     @assert unit_cell.D == lattice.D
     return unit_cell.n * lattice.N
@@ -18,9 +18,10 @@ Return whether `s` is a valid site index.
 function valid_site(s::Int,unit_cell::UnitCell,lattice::Lattice)
 
     @assert unit_cell.D == lattice.D
-    Nₛ = get_Nₛ(unit_cell, lattice)
+    Nₛ = get_num_sites(unit_cell, lattice)
     return 0 < s <= Nₛ
 end
+
 
 """
     site_to_unitcell(s::Int,unit_cell::UnitCell,lattice::Lattice)
@@ -49,78 +50,78 @@ end
 """
     site_to_loc!(loc::AbstractVector{Int},s::Int,unit_cell::UnitCell,lattice::Lattice)
 
-For a given site `s` in the lattice, calculate the location `loc` of the unit cell it is in
+For a given site `s` in the lattice, calculate the location `l` of the unit cell it is in
 and return the orbital species `o` of the site.
 """
-function site_to_loc!(loc::AbstractVector{Int},s::Int,unit_cell::UnitCell,lattice::Lattice)
+function site_to_loc!(l::AbstractVector{Int},s::Int,unit_cell::UnitCell,lattice::Lattice)
 
     o = site_to_orbital(s,unit_cell,lattice)
     u = site_to_unitcell(s,unit_cell,lattice)
-    unitcell_to_loc!(loc,u,lattice)
+    unitcell_to_loc!(l,u,lattice)
     return o
 end
 
 """
     site_to_loc(s::Int,unit_cell::UnitCell,lattice::Lattice)
 
-For a given site `s` in the lattice, return the location `loc` of the unit cell it is in
+For a given site `s` in the lattice, return the location `l` of the unit cell it is in
 and the orbital species `o`.
 """
 function site_to_loc(s::Int,unit_cell::UnitCell,lattice::Lattice)
 
     @assert unit_cell.D == lattice.D
-    loc = zeros(Int,unit_cell.D)
-    o   = site_to_loc!(loc,s,unit_cell,lattice)
-    return (loc, o)
+    l = zeros(Int,unit_cell.D)
+    o   = site_to_loc!(l,s,unit_cell,lattice)
+    return (l, o)
 end
 
 
 """
-    loc_to_site(loc::AbstractVector{Int},o::Int,unit_cell::UnitCell,lattice::Lattice)
+    loc_to_site(l::AbstractVector{Int},o::Int,unit_cell::UnitCell,lattice::Lattice)
 
-Given a unit cell location `loc` and orbital species `o`, return the corresponding
+Given a unit cell location `l` and orbital species `o`, return the corresponding
 site `s` in the lattice.
 """
-function loc_to_site(loc::AbstractVector{Int},o::Int,unit_cell::UnitCell,lattice::Lattice)
+function loc_to_site(l::AbstractVector{Int},o::Int,unit_cell::UnitCell,lattice::Lattice)
 
     @assert unit_cell.D == lattice.D
     @assert 0 < o <= unit_cell.n
-    @assert valid_location(loc,lattice)
+    @assert valid_location(l,lattice)
 
-    u = loc_to_unitcell(loc,lattice)
+    u = loc_to_unitcell(l,lattice)
     s = unit_cell.n * (u-1) + o
     return s
 end
 
 
 """
-    site_to_site(s::Int,Δl::AbstractVector{Int},o::Int,unit_cell::UnitCell,lattice::Lattice)
+    site_to_site(s₁::Int,Δl::AbstractVector{Int},o₂::Int,unit_cell::UnitCell,lattice::Lattice)
 
-Given an initial site `s₁`, and a displacement in unit cell `dl` and a terminating orbital
+Given an initial site `s₁`, and a displacement in unit cells `Δl` and a terminating orbital
 species `o₂`, return the resulting site `s₂` in the lattice.
 """
-function site_to_site(s₁::Int,dl::AbstractVector{Int},o₂::Int,unit_cell::UnitCell,lattice::Lattice)
+function site_to_site(s₁::Int,Δl::AbstractVector{Int},o₂::Int,unit_cell::UnitCell,lattice::Lattice)
 
     (; D, n) = unit_cell
-    (; lvec) = lattice
+    l = lattice.lvec
 
     # check that initial site index is valid
     @assert valid_site(s₁, unit_cell, lattice)
 
-    # get unit cell location containing intial site
-    o₁ = site_to_loc!(lvec, s, unit_cell, lattice)
+    # get unit cell location containing s₁
+    o₁ = site_to_loc!(l, s₁, unit_cell, lattice)
 
     # displace unit cell location
-    @. lvec += dl
+    @. l += Δl
 
     # apply periodic boundary conditions
-    pbc!(lvec, lattice)
+    pbc!(l, lattice)
 
     # check if valid unit cell location
-    @assert valid_location(loc, lattiice)
+    @assert valid_location(l, lattiice)
 
     # get final site
-    s₂ = loc_to_site(loc, o₂, unit_cell, lattice)
+    s₂ = loc_to_site(l, o₂, unit_cell, lattice)
 
     # check that final site index is valid
     @assert valid_site(s₂, unit_cell, lattice)
@@ -130,26 +131,78 @@ end
 
 
 """
-    calc_k_points(unit_cell::UnitCell{T}, lattice::Lattice) where {T}
+    calc_k_point!(k_point::AbstractVector{T}, k_loc::AbstractVector{Int}, unit_cell::UnitCell{T},
+        lattice::Lattice) where {T}
 
-Return the k-points grid assicated with a finite lattice.
+Calculate the k-point `k_point` corresponding to the k-point index `k_loc`.
+"""
+function calc_k_point!(k_point::AbstractVector{T}, k_loc::AbstractVector{Int}, unit_cell::UnitCell{T}, lattice::Lattice) where {T}
+
+
+    @assert length(k_point) == length(k_loc) == length(unit_cell.D) == length(lattice.D)
+    (; reciprocal_vecs) = unit_cell
+    (; D, L, periodic) = lattice
+
+    for d in 1:D
+        l = max( L[d]*periodic[d] , 1 )
+        @assert 0 <= k_loc[d] < l
+        @views @. k_point = k_loc[d] * reciprocal_vecs[:,d] / l
+    end
+
+    return nothing
+end
+
+"""
+    calc_k_point(k_point::AbstractVector{T}, k_loc::AbstractVector{Int}, unit_cell::UnitCell{T},
+        lattice::Lattice) where {T}
+
+Return the k-point `k_point` corresponding to the k-point index `k_loc`.
+"""
+function calc_k_point(k_loc::AbstractVector{Int}, unit_cell::UnitCell{T}, lattice::Lattice) where {T}
+    
+    k_point = zeros(T,lattice.D)
+    calc_k_point!(k_point,k_loc,unit_cell)
+
+    return k_point
+end
+
+
+"""
+    calc_k_points!(k_points::AbstractArray{T}, unit_cell::UnitCell{T},
+        lattice::Lattice) where {T}
+
+Calculate the k-point grid `k_points` assicated with a finite lattice.
+"""
+function calc_k_points!(k_points::AbstractArray{T}, unit_cell::UnitCell{T}, lattice::Lattice) where {T}
+    
+    @assert unit_cell.D == lattice.D
+    (; D, reciprocal_vecs) = unit_cell
+    (; L, N, periodic)     = lattice
+    k_loc                  = lattice.lvec
+    
+    for ci in CartesianIndices( size(k_points)[2:D+1] )
+        for d in 1:D
+            k_loc[d] = ci[d]
+        end
+        k_point = @view k_points[:,ci]
+        calc_k_point!(k_point, k_loc, unit_cell, lattice)
+    end
+
+    return nothing
+end
+
+"""
+    calc_k_points!(unit_cell::UnitCell{T}, lattice::Lattice) where {T}
+
+Return the k-point grid assicated with a finite lattice.
 For a `D` dimensional lattice, a `D+1` dimensional array will be returned.
 If the system has open boundary conditions in a given direction, it will treat the linear
 extent of the system in that direction as equalling `L=1` for the purposes of calucting the k-points.
 """
 function calc_k_points(unit_cell::UnitCell{T}, lattice::Lattice) where {T}
     
-    @assert unit_cell.D == lattice.D
-    (; D, reciprocal_vecs) = unit_cell
-    (; L, periodic)        = lattice
+    k_points = zeros(T, D, (max(L[d]*periodic[d] , 1) for d in 1:D)...)
+    calc_k_points!(k_points, unit_cell, lattice)
 
-    k = zeros(T, D, (max(L[d]*periodic[d] , 1) for d in 1:D)...)
-    
-    for ci in CartesianIndices(k)
-        for d in 1:D
-            k[ci] += (ci[d+1]-1)/(size(k,d+1)) * reciprocal_vecs[ci[1],d]
-        end
-    end
-
-    return k
+    return k_points
 end

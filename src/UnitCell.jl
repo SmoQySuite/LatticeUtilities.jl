@@ -43,7 +43,7 @@ function UnitCell(lattice_vecs::Matrix{T}, basis_vecs::Matrix{T}) where {T<:Abst
     n = size(basis_vecs,2)
 
     # calculating reciprocal lattice vectors corresponding to lattice vectors
-    reciprocal_vecs = 2π*inv(lattice_vecs)
+    reciprocal_vecs = 2π * inv(lattice_vecs)'
 
     return UnitCell{T}(D, n, lattice_vecs, reciprocal_vecs, basis_vecs)
 end
@@ -59,6 +59,7 @@ function UnitCell(lattice_vecs::AbstractVector{Vector{T}}, basis_vecs::AbstractV
     return UnitCell(hcat(lattice_vecs...), hcat(basis_vecs...))
 end
 
+
 """
     Base.show(io::IO, uc::UnitCell{T}) where {T}
     Base.show(io::IO, ::MIME"text/plain", uc::UnitCell{T}) where {T}
@@ -73,15 +74,16 @@ function Base.show(io::IO, ::MIME"text/plain", uc::UnitCell{T}) where {T}
     print(io,"- D = $D\n")
     print(io,"- n = $n\n")
     print(io,"- lattice_vecs =\n")
-    show(io,"text/plain",reciprocal_vecs)
+    show(io,"text/plain",lattice_vecs)
     print(io,"\n")
     print(io,"- reciprocal_vecs =\n")
-    show(io,"text/plain",lattice_vecs)
+    show(io,"text/plain",reciprocal_vecs)
     print(io,"\n")
     print(io,"- basis_vecs =\n")
     show(io,"text/plain",basis_vecs)
     return nothing
 end
+
 
 """
     loc_to_pos!(r::AbstractVector{T}, l::AbstractVector{Int}, unit_cell::UnitCell{T})
@@ -162,12 +164,12 @@ orbitals `o₁` and `o₂` in the unit cell respectively, along with a displacem
 function displacement_to_vec!(Δr::AbstractVector{T}, Δl::AbstractVector{Int}, o₁::Int, o₂::Int, unit_cell::UnitCell{T}) where {T}
     
     (; D, n, lattice_vecs, basis_vecs) = unit_cell
-    @assert length(Δr) == length(Δx) == D
+    @assert length(Δr) == length(Δl) == D
     @assert 1 <= o₁ <= n
     @assert 1 <= o₂ <= n
 
     fill!(Δr,0.0)
-    for d in in 1:D
+    for d in 1:D
         @views @. Δr += Δl[d] * lattice_vecs[:,d]
     end
     @views @. Δr += basis_vecs[:,o₂] - basis_vecs[:,o₁]

@@ -5,7 +5,7 @@ using Documenter, LatticeUtilities
 DocMeta.setdocmeta!(LatticeUtilities, :DocTestSetup, :(using LatticeUtilities); recursive=true)
 
 makedocs(
-    sitename = "LatticeUtilities",
+    sitename = "LatticeUtilities.jl",
     format   = Documenter.HTML(),
     modules  = [LatticeUtilities],
     doctest  = true
