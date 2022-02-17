@@ -134,7 +134,7 @@ end
     calc_k_point!(k_point::AbstractVector{T}, k_loc::AbstractVector{Int}, unit_cell::UnitCell{T},
         lattice::Lattice) where {T}
 
-Calculate the k-point `k_point` corresponding to the k-point index `k_loc`.
+Calculate the k-point `k_point` corresponding to the k-point location `k_loc`.
 """
 function calc_k_point!(k_point::AbstractVector{T}, k_loc::AbstractVector{Int}, unit_cell::UnitCell{T}, lattice::Lattice) where {T}
 
@@ -156,7 +156,7 @@ end
     calc_k_point(k_point::AbstractVector{T}, k_loc::AbstractVector{Int}, unit_cell::UnitCell{T},
         lattice::Lattice) where {T}
 
-Return the k-point `k_point` corresponding to the k-point index `k_loc`.
+Return the k-point `k_point` corresponding to the k-point location `k_loc`.
 """
 function calc_k_point(k_loc::AbstractVector{Int}, unit_cell::UnitCell{T}, lattice::Lattice) where {T}
     
