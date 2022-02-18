@@ -27,7 +27,7 @@ end
 """
     Lattice(L::Vector{Int},periodic::Vector{Bool})
 
-Constructs a `Lattice`.
+Constructs a [`Lattice`](@ref).
 """
 function Lattice(L::Vector{Int},periodic::Vector{Bool})
 
@@ -74,8 +74,6 @@ function valid_location(loc::AbstractVector{Int}, lat::Lattice)
     (; D, N, L) = lat
 
     isvalid = true
-    # first apply periodic boundary conditions
-    pbc!(loc,lat)
     # check if location valid in each direction
     for d in 1:D
         if !(0<=loc[d]<L[d])
@@ -95,7 +93,7 @@ Apply periodic boundary to unit cell location `loc`.
 """
 function pbc!(loc::AbstractVector{Int}, lattice::Lattice)
 
-    (; D, N, L, periodic) = lat
+    (; D, N, L, periodic) = lattice
     @assert length(loc) == D
     for d in 1:D
         # check if given direction in lattice is periodic
@@ -105,11 +103,9 @@ function pbc!(loc::AbstractVector{Int}, lattice::Lattice)
                 loc[d] = loc[d] + L[d] * (abs(loc[d])÷L[d] + 1)
             end
             # apply periodic boundary conditions
-            loc[d] = loc[d] % L[d]
+            loc[d] = mod(loc[d], L[d])
         end
     end
-    # test whether unit cell location is valid
-    @assert valid_location(loc,lattice)
     return nothing
 end
 
@@ -126,8 +122,8 @@ function unitcell_to_loc!(l::AbstractVector{Int},u::Int,lattice::Lattice)
 
     for d in D:-1:1
         N    = N ÷ L[d]
-        l[d] = u ÷ N
-        u    = u % N
+        l[d] = (u-1) ÷ N
+        u    = mod1(u,N)
     end
 
     return nothing
@@ -157,7 +153,7 @@ function loc_to_unitcell(l::AbstractVector{Int},lattice::Lattice)
     @assert length(l) == D
     @assert valid_location(l,lattice)
 
-    u = 0
+    u = 1
     for d in D:-1:1
         N = N ÷ L[d]
         u = u + N * l[d]

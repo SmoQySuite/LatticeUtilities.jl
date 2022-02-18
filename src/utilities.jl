@@ -80,16 +80,39 @@ end
     loc_to_site(l::AbstractVector{Int},o::Int,unit_cell::UnitCell,lattice::Lattice)
 
 Given a unit cell location `l` and orbital species `o`, return the corresponding
-site `s` in the lattice.
+site `s` in the lattice. If the location is not valid owing to open boundary conditions
+then return `s = 0`.
 """
 function loc_to_site(l::AbstractVector{Int},o::Int,unit_cell::UnitCell,lattice::Lattice)
 
     @assert unit_cell.D == lattice.D
     @assert 0 < o <= unit_cell.n
-    @assert valid_location(l,lattice)
+    
+    if valid_location(l,lattice)
+        u = loc_to_unitcell(l,lattice)
+        s = loc_to_site(u,o,unit_cell,lattice)
+    else
+        s = 0
+    end
+    
+    return s
+end
 
-    u = loc_to_unitcell(l,lattice)
-    s = unit_cell.n * (u-1) + o
+"""
+    loc_to_site(u::Int,o::Int,unit_cell::UnitCell,lattice::Lattice)
+
+Given a unit cell index `u` and orbital `o`, return the correspond site `s`.
+"""
+function loc_to_site(u::Int,o::Int,unit_cell::UnitCell,lattice::Lattice)
+
+    (; D, N) = lattice
+    (; n)    = unit_cell
+
+    @assert 0 < o <= n "0 < $o <= $n"
+    @assert 0 < u <= N "0 < $u <= $N"
+
+    s = n * (u-1) + o
+
     return s
 end
 
@@ -98,7 +121,8 @@ end
     site_to_site(s₁::Int,Δl::AbstractVector{Int},o₂::Int,unit_cell::UnitCell,lattice::Lattice)
 
 Given an initial site `s₁`, and a displacement in unit cells `Δl` and a terminating orbital
-species `o₂`, return the resulting site `s₂` in the lattice.
+species `o₂`, return the resulting site `s₂` in the lattice. If the displacement is
+not allowed as a result of open boundary conditions, then  `s₂=0` is returned.
 """
 function site_to_site(s₁::Int,Δl::AbstractVector{Int},o₂::Int,unit_cell::UnitCell,lattice::Lattice)
 
@@ -117,44 +141,42 @@ function site_to_site(s₁::Int,Δl::AbstractVector{Int},o₂::Int,unit_cell::Un
     # apply periodic boundary conditions
     pbc!(l, lattice)
 
-    # check if valid unit cell location
-    @assert valid_location(l, lattiice)
-
     # get final site
     s₂ = loc_to_site(l, o₂, unit_cell, lattice)
 
     # check that final site index is valid
-    @assert valid_site(s₂, unit_cell, lattice)
+    @assert valid_site(s₂, unit_cell, lattice) "$s₂"
 
     return s₂
 end
 
 
 """
-    calc_k_point!(k_point::AbstractVector{T}, k_loc::AbstractVector{Int}, unit_cell::UnitCell{T},
-        lattice::Lattice) where {T}
+    calc_k_point!(k_point::AbstractVector{T}, k_loc::AbstractVector{Int},
+        unit_cell::UnitCell{T}, lattice::Lattice) where {T}
 
 Calculate the k-point `k_point` corresponding to the k-point location `k_loc`.
 """
 function calc_k_point!(k_point::AbstractVector{T}, k_loc::AbstractVector{Int}, unit_cell::UnitCell{T}, lattice::Lattice) where {T}
 
 
-    @assert length(k_point) == length(k_loc) == length(unit_cell.D) == length(lattice.D)
+    @assert length(k_point) == length(k_loc) == unit_cell.D == lattice.D
     (; reciprocal_vecs) = unit_cell
     (; D, L, periodic) = lattice
 
+    fill!(k_point,0.0)
     for d in 1:D
         l = max( L[d]*periodic[d] , 1 )
-        @assert 0 <= k_loc[d] < l
-        @views @. k_point = k_loc[d] * reciprocal_vecs[:,d] / l
+        @assert 0 <= k_loc[d] < l "0 <= $(k_loc[d]) < $l"
+        @views @. k_point += k_loc[d] * reciprocal_vecs[:,d] / l
     end
 
     return nothing
 end
 
 """
-    calc_k_point(k_point::AbstractVector{T}, k_loc::AbstractVector{Int}, unit_cell::UnitCell{T},
-        lattice::Lattice) where {T}
+    calc_k_point(k_point::AbstractVector{T}, k_loc::AbstractVector{Int},
+        unit_cell::UnitCell{T}, lattice::Lattice) where {T}
 
 Return the k-point `k_point` corresponding to the k-point location `k_loc`.
 """
@@ -182,7 +204,7 @@ function calc_k_points!(k_points::AbstractArray{T}, unit_cell::UnitCell{T}, latt
     
     for ci in CartesianIndices( size(k_points)[2:D+1] )
         for d in 1:D
-            k_loc[d] = ci[d]
+            k_loc[d] = ci[d] - 1
         end
         k_point = @view k_points[:,ci]
         calc_k_point!(k_point, k_loc, unit_cell, lattice)
@@ -201,8 +223,133 @@ extent of the system in that direction as equalling `L=1` for the purposes of ca
 """
 function calc_k_points(unit_cell::UnitCell{T}, lattice::Lattice) where {T}
     
+    (; D, L, periodic) = lattice
     k_points = zeros(T, D, (max(L[d]*periodic[d] , 1) for d in 1:D)...)
     calc_k_points!(k_points, unit_cell, lattice)
 
     return k_points
+end
+
+
+"""
+    bond_to_vec!(Δr::AbstractVector{T},bond::Bond,unit_cell::UnitCell{T}) where {T}
+
+Calculate the displacement vector associated with a `bond`.
+"""
+function bond_to_vec!(Δr::AbstractVector{T},bond::Bond,unit_cell::UnitCell{T}) where {T}
+
+    displacement_to_vec!(Δr,Δl,o[1],o[2],unit_cell)
+    return nothing
+end
+
+"""
+    bond_to_vec(bond::Bond,unit_cell::UnitCell{T})
+
+Return the displacement vector associated with a `bond`.
+"""
+function bond_to_vec(bond::Bond,unit_cell::UnitCell{T}) where {T}
+
+    Δr = zeros(T,bond.D)
+    bond_to_vec!(bond,unit_cell)
+    return Δr
+end
+
+
+"""
+    build_neighbor_table(bond::Bond, unit_cell::UnitCell, lattice::Lattice)
+
+Construct the neighbor table corresponding to `bond`.
+"""
+function build_neighbor_table(bond::Bond, unit_cell::UnitCell, lattice::Lattice)
+
+    @assert bond.D == unit_cell.D == lattice.D
+    @assert length(bond.o) == 2
+    @assert 0 < bond.o[1] <= unit_cell.n
+    @assert 0 < bond.o[2] <= unit_cell.n
+
+    (; D, L, N, periodic) = lattice
+    (; n)                 = unit_cell
+    (; Δl, o)             = bond
+
+    # initialize empty neighbor table
+    neighbor_table = Vector{Int}[]
+
+    # iterate over all unit cells
+    for u in 1:N
+        # get initial site
+        s₁ = loc_to_site(u, o[1], unit_cell, lattice)
+        # get final site
+        s₂ = site_to_site(s₁, Δl, o[2], unit_cell, lattice)
+        # check if final site was found
+        if s₂ != 0
+            # add to neighbor table
+            push!(neighbor_table, [s₁,s₂])
+        end
+    end
+
+    return hcat(neighbor_table...)
+end
+
+"""
+    build_neighbor_table(bonds::AbstractVector{Bond}, unit_cell::UnitCell, lattice::Lattice)
+
+Construct the neighbor table corresponding to `bonds`.
+"""
+function build_neighbor_table(bonds::AbstractVector{Bond}, unit_cell::UnitCell, lattice::Lattice)
+
+    neighbor_tables = Matrix{Int}[]
+    for i in 1:length(bonds)
+        neighbor_table = build_neighbor_table(bonds[i], unit_cell, lattice)
+        push!(neighbor_tables, neighbor_table)
+    end
+
+    return hcat(neighbor_tables...)
+end
+
+
+"""
+    sort_neighbor_table!(neighbor_table::Matrix{Int})
+
+Sorts `neighbor_table` so that the first row is in strictly ascending order, and for fixed values
+in the first row, the second row is also in ascending order.
+Also returns the inverse of the sorting perumtation, so original order of neighbors in `neighbor_table`
+can be easily recovered.
+"""
+function sort_neighbor_table!(neighbor_table::Matrix{Int})
+
+    perm = sorted_neighbor_table_perm!(neighbor_table)
+    @views @. neighbor_table = neighbor_table[:,perm]
+    inv_perm = sortperm(perm)
+
+    return inv_perm
+end
+
+"""
+    sorted_neighbor_table_perm!(neighbor_table::Matrix{Int})
+
+Returns the permutation that sorts `neighbor_table` so that the first row is in strictly ascending order,
+and for fixed values in the first row, the second row is also in ascending order. This method also modifies
+the `neighbor_table` such that the smaller index in each column is always in the first row.
+"""
+function sorted_neighbor_table_perm!(neighbor_table::Matrix{Int})
+    
+    @assert size(neighbor_table,1)==2
+
+    # make sure smaller number is always in first column of neighbor table
+    for i in 1:size(neighbor_table,2)
+        c1 = neighbor_table[1,i]
+        c2 = neighbor_table[2,i]
+        if c1 > c2
+            neighbor_table[1,i] = c2
+            neighbor_table[2,i] = c1
+        end
+    end
+
+    top_row    = @view neighbor_table[1,:]
+    bottom_row = @view neighbor_table[2,:]
+    max_index  = maximum(neighbor_table)
+    vals       = max_index * top_row + bottom_row
+    perm       = sortperm(vals)
+
+    return perm
 end

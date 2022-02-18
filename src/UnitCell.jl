@@ -27,7 +27,7 @@ end
 """
     UnitCell(lattice_vecs::Matrix{T}, basis_vecs::Matrix{T}) where {T<:AbstractFloat}
 
-Constrcuts a `UnitCell`.
+Constrcuts a [`UnitCell`](@ref).
 """
 function UnitCell(lattice_vecs::Matrix{T}, basis_vecs::Matrix{T}) where {T<:AbstractFloat}
 
@@ -52,7 +52,7 @@ end
     UnitCell(lattice_vecs::AbstractVector{Vector{T}}, basis_vecs::AbstractVector{Vector{T}})
         where {T<:AbstractFloat}
 
-Constrcuts a `UnitCell`.
+Constrcuts a [`UnitCell`](@ref).
 """
 function UnitCell(lattice_vecs::AbstractVector{Vector{T}}, basis_vecs::AbstractVector{Vector{T}}) where {T<:AbstractFloat}
 
