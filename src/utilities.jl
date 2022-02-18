@@ -144,9 +144,6 @@ function site_to_site(s₁::Int,Δl::AbstractVector{Int},o₂::Int,unit_cell::Un
     # get final site
     s₂ = loc_to_site(l, o₂, unit_cell, lattice)
 
-    # check that final site index is valid
-    @assert valid_site(s₂, unit_cell, lattice) "$s₂"
-
     return s₂
 end
 
