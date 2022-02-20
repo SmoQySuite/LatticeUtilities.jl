@@ -1,6 +1,7 @@
 # Examples
 
-This page includes several examples on how to use the `LatticeUtilities.jl` package.
+This page includes several examples on how to use the
+[`LatticeUtilities.jl`](https://cohensbw.github.io/LatticeUtilities.jl/dev/) package.
 
 ## Kagome Lattice
 
@@ -40,17 +41,17 @@ the Kagome lattice unit cell:
 julia> kagome = UnitCell([[1.0,0.0], [1/2,√3/2]],
                          [[0.0,0.0], [1/2,0.0], [1/4,√3/4]])
 UnitCell{Float64}:
-- D = 2
-- n = 3
-- lattice_vecs =
+ - D = 2
+ - n = 3
+ - lattice_vecs =
 2×2 Matrix{Float64}:
  1.0  0.5
  0.0  0.866025
-- reciprocal_vecs =
+ - reciprocal_vecs =
 2×2 Matrix{Float64}:
   6.28319  0.0
  -3.6276   7.2552
-- basis_vecs =
+ - basis_vecs =
 2×3 Matrix{Float64}:
  0.0  0.5  0.25
  0.0  0.0  0.433013
@@ -97,10 +98,10 @@ in the direction of both lattice vectors:
 ```jldoctest kagome
 julia> lattice = Lattice([3,3], [true,true])
 Lattice:
-- D = 2
-- N = 9
-- L = [3, 3]
-- periodic = Bool[1, 1]
+ - D = 2
+ - N = 9
+ - L = [3, 3]
+ - periodic = Bool[1, 1]
 ```
 
 Given an initial site, a displacement in unit cells, and a terminating orbital species,
@@ -136,22 +137,40 @@ six bond defintions that need to be defined:
 
 ```jldoctest kagome
 julia> bond_1 = Bond([1,2],[0,0])
-Bond(2, [1, 2], [0, 0])
+Bond:
+ - D  = 2
+ - o  = [1, 2]
+ - Δl = [0, 0]
 
 julia> bond_2 = Bond([1,3],[0,0])
-Bond(2, [1, 3], [0, 0])
+Bond:
+ - D  = 2
+ - o  = [1, 3]
+ - Δl = [0, 0]
 
 julia> bond_3 = Bond([2,3],[0,0])
-Bond(2, [2, 3], [0, 0])
+Bond:
+ - D  = 2
+ - o  = [2, 3]
+ - Δl = [0, 0]
 
 julia> bond_4 = Bond([2,1],[1,0])
-Bond(2, [2, 1], [1, 0])
+Bond:
+ - D  = 2
+ - o  = [2, 1]
+ - Δl = [1, 0]
 
 julia> bond_5 = Bond([3,1],[0,1])
-Bond(2, [3, 1], [0, 1])
+Bond:
+ - D  = 2
+ - o  = [3, 1]
+ - Δl = [0, 1]
 
 julia> bond_6 = Bond([3,2],[-1,1])
-Bond(2, [3, 2], [-1, 1])
+Bond:
+ - D  = 2
+ - o  = [3, 2]
+ - Δl = [-1, 1]
 ```
 
 Now we are ready to build the corresponding neighbor table:

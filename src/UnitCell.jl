@@ -71,15 +71,15 @@ function Base.show(io::IO, ::MIME"text/plain", uc::UnitCell{T}) where {T}
 
     (; D, n, lattice_vecs, reciprocal_vecs, basis_vecs) = uc
     print(io, "UnitCell{$T}:\n")
-    print(io,"- D = $D\n")
-    print(io,"- n = $n\n")
-    print(io,"- lattice_vecs =\n")
+    print(io," - D = $D\n")
+    print(io," - n = $n\n")
+    print(io," - lattice_vecs =\n")
     show(io,"text/plain",lattice_vecs)
     print(io,"\n")
-    print(io,"- reciprocal_vecs =\n")
+    print(io," - reciprocal_vecs =\n")
     show(io,"text/plain",reciprocal_vecs)
     print(io,"\n")
-    print(io,"- basis_vecs =\n")
+    print(io," - basis_vecs =\n")
     show(io,"text/plain",basis_vecs)
     return nothing
 end

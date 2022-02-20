@@ -48,18 +48,20 @@ end
 
 """
     Base.show(io::IO, lattice::Lattice)
+    Base.show(io::IO, ::MIME"text/plain", lattice::Lattice)
 
 Show lattice.
 """
-Base.show(io::IO, lattice::Lattice) = print(io,"Lattice(D=$(lattice.D), N=$(lattice.N)")
+Base.show(io::IO, lattice::Lattice) = print(io,"Lattice(D=$(lattice.D), N=$(lattice.N), ",
+                                            lattice.L, ", ", lattice.periodic)
 function Base.show(io::IO, ::MIME"text/plain", lattice::Lattice)
 
     (; D, N, L, periodic) = lattice
     println(io, "Lattice:")
-    println(io, "- D = $D")
-    println(io, "- N = $N")
-    println(io, "- L = ", L)
-    println(io, "- periodic = ", periodic)
+    println(io, " - D = $D")
+    println(io, " - N = $N")
+    println(io, " - L = ", L)
+    println(io, " - periodic = ", periodic)
     return nothing
 end
 

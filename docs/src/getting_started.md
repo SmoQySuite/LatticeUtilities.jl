@@ -1,6 +1,7 @@
 # Getting Started
 
-First the `LatticeUtilities.jl` package needs to be imported.
+First the [`LatticeUtilities.jl`](https://cohensbw.github.io/LatticeUtilities.jl/dev/)
+package needs to be imported.
 
 ```jldoctest getting_started
 julia> using LatticeUtilities
@@ -12,19 +13,19 @@ As an initial example, we construct [`UnitCell`](@ref) type to represent the uni
 julia> cubic = UnitCell([[1.,0.,0.], [0.,1.,0.], [0.,0.,1.]],
                         [[0.,0.,0.]])
 UnitCell{Float64}:
-- D = 3
-- n = 1
-- lattice_vecs =
+ - D = 3
+ - n = 1
+ - lattice_vecs =
 3×3 Matrix{Float64}:
  1.0  0.0  0.0
  0.0  1.0  0.0
  0.0  0.0  1.0
-- reciprocal_vecs =
+ - reciprocal_vecs =
 3×3 Matrix{Float64}:
  6.28319  0.0      0.0
  0.0      6.28319  0.0
  0.0      0.0      6.28319
-- basis_vecs =
+ - basis_vecs =
 3×1 Matrix{Float64}:
  0.0
  0.0
@@ -38,10 +39,10 @@ periodic boundary conditions in the direction of all three lattice vectors:
 ```jldoctest getting_started
 julia> lattice = Lattice([4,4,4],[true,true,true])
 Lattice:
-- D = 3
-- N = 64
-- L = [4, 4, 4]
-- periodic = Bool[1, 1, 1]
+ - D = 3
+ - N = 64
+ - L = [4, 4, 4]
+ - periodic = Bool[1, 1, 1]
 ```
 
 Bonds or edeges in a lattice are represented by the [`Bond`](@ref) type.
@@ -49,13 +50,22 @@ Considering just nearest neighbors, there are three bonds that need to be define
 
 ```jldoctest getting_started
 julia> bond_x = Bond([1,1],[1,0,0])
-Bond(3, [1, 1], [1, 0, 0])
+Bond:
+ - D  = 3
+ - o  = [1, 1]
+ - Δl = [1, 0, 0]
 
 julia> bond_y = Bond([1,1],[0,1,0])
-Bond(3, [1, 1], [0, 1, 0])
+Bond:
+ - D  = 3
+ - o  = [1, 1]
+ - Δl = [0, 1, 0]
 
 julia> bond_z = Bond([1,1],[0,0,1])
-Bond(3, [1, 1], [0, 0, 1])
+Bond:
+ - D  = 3
+ - o  = [1, 1]
+ - Δl = [0, 0, 1]
 ```
 
 Using these three bond defintions, we can construct the corresponding neighbor table
