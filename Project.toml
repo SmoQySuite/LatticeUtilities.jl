@@ -1,7 +1,7 @@
 name = "LatticeUtilities"
 uuid = "33fcf0eb-3ae3-43db-bfbc-1d92a3639bd1"
 authors = ["Benjamin Cohen-Stead <benwcs@gmail.com>"]
-version = "1.0.10"
+version = "1.0.11"
 
 [deps]
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
