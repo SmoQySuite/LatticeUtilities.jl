@@ -7,7 +7,8 @@ package needs to be imported.
 julia> using LatticeUtilities
 ```
 
-As an initial example, we construct [`UnitCell`](@ref) type to represent the unit cell for a cubic lattice:
+As an initial example, we construct an instance of the [`UnitCell`](@ref) type
+to represent the unit cell for a cubic lattice:
 
 ```jldoctest getting_started
 julia> cubic = UnitCell([[1.,0.,0.], [0.,1.,0.], [0.,0.,1.]],

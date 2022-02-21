@@ -91,7 +91,7 @@ and [`displacement_to_vec!`](@ref), with names ending in `!` that work by modify
 the first array argument in place.
 
 The next step is to construct an instance of the type [`Lattice`](@ref), which can be used in conjunction
-with [`UnitCell`](@ref) instance of like dimenion `D`, to represent a finite lattice.
+with a [`UnitCell`](@ref) instance of like dimension `D`, to represent a finite lattice.
 In this example we will consider a ``3 \times 3`` unit cell Kagome lattice with periodic boundary conditions
 in the direction of both lattice vectors:
 
@@ -132,8 +132,8 @@ julia> calc_k_points(kagome,lattice)
 
 Individual k-points can be caluclated using the [`calc_k_point`](@ref) and [`calc_k_point!`](@ref) methods.
 
-If we concern ourselves with just nearest neighbors, there are
-six bond defintions that need to be defined:
+If we concern ourselves with just nearest neighbor bonds, we need to define six instances of
+[`Bond`](@ref) type:
 
 ```jldoctest kagome
 julia> bond_1 = Bond([1,2],[0,0])

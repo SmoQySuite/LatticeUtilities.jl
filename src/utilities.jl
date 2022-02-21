@@ -350,3 +350,34 @@ function sorted_neighbor_table_perm!(neighbor_table::Matrix{Int})
 
     return perm
 end
+
+
+"""
+    function translational_avg!(fg::AbstractArray{Complex{T}}, f::AbstractArray{Complex{T}},
+        g::AbstractArray{Complex{T}}; restore::Bool=true) where {T<:AbstractFloat}
+
+Let `f[i]` and `g[j]` be two distinct multi-dimensional arrays, where `i` and `j` represent
+an index into them and also correspond to the position of a unit cell in a periodic finite lattice
+This method then computes in-place the product `(f⋅g)[i-j]` that is averaged over translation symmetry.
+If `restore = true` then `f` and `g` are left unchanged, otherwise they will be left modified.
+"""
+function translational_avg!(fg::AbstractArray{Complex{T}}, f::AbstractArray{Complex{T}},
+    g::AbstractArray{Complex{T}}; restore::Bool=true) where {T<:AbstractFloat}
+    
+    @assert size(fg) == size(f) "$(size(fg)) == $(size(f))"
+    @assert size(fg) == size(f) "$(size(fg)) == $(size(g))"
+
+    fft!(f)
+    fft!(g)
+    N  = length(f)
+    g′ = fg
+    circshift!(g′, g, size(fg,d)-1 for d in 1:ndims(fg))
+    reverse!(g′)
+    @. fg = f * g′ / N
+    ifft!(fg)
+    if restore
+        ifft!(f)
+        ifft!(g)
+    end
+    return nothing
+end
