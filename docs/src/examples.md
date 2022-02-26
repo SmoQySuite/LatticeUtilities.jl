@@ -38,8 +38,8 @@ We begin by constructing an instance of the type [`UnitCell`](@ref) to represent
 the Kagome lattice unit cell:
 
 ```jldoctest kagome; setup = :(using LatticeUtilities)
-julia> kagome = UnitCell([[1.0,0.0], [1/2,√3/2]],
-                         [[0.0,0.0], [1/2,0.0], [1/4,√3/4]])
+julia> kagome = UnitCell(lattice_vecs = [[1.0,0.0], [1/2,√3/2]],
+                         basis_vecs = [[0.0,0.0], [1/2,0.0], [1/4,√3/4]] )
 UnitCell{Float64}:
  - D = 2
  - n = 3
@@ -96,7 +96,7 @@ In this example we will consider a ``3 \times 3`` unit cell Kagome lattice with 
 in the direction of both lattice vectors:
 
 ```jldoctest kagome
-julia> lattice = Lattice([3,3], [true,true])
+julia> lattice = Lattice(L = [3,3], periodic = [true,true])
 Lattice:
  - D = 2
  - N = 9
@@ -136,41 +136,41 @@ If we concern ourselves with just nearest neighbor bonds, we need to define six 
 [`Bond`](@ref) type:
 
 ```jldoctest kagome
-julia> bond_1 = Bond([1,2],[0,0])
+julia> bond_1 = Bond(orbitals=[1,2], displacement=[0,0])
 Bond:
- - D  = 2
- - o  = [1, 2]
- - Δl = [0, 0]
+ - D = 2
+ - orbitals = [1, 2]
+ - displacement = [0, 0]
 
-julia> bond_2 = Bond([1,3],[0,0])
+julia> bond_2 = Bond([1,3], [0,0])
 Bond:
- - D  = 2
- - o  = [1, 3]
- - Δl = [0, 0]
+ - D = 2
+ - orbitals = [1, 3]
+ - displacement = [0, 0]
 
 julia> bond_3 = Bond([2,3],[0,0])
 Bond:
- - D  = 2
- - o  = [2, 3]
- - Δl = [0, 0]
+ - D = 2
+ - orbitals = [2, 3]
+ - displacement = [0, 0]
 
 julia> bond_4 = Bond([2,1],[1,0])
 Bond:
- - D  = 2
- - o  = [2, 1]
- - Δl = [1, 0]
+ - D = 2
+ - orbitals = [2, 1]
+ - displacement = [1, 0]
 
 julia> bond_5 = Bond([3,1],[0,1])
 Bond:
- - D  = 2
- - o  = [3, 1]
- - Δl = [0, 1]
+ - D = 2
+ - orbitals = [3, 1]
+ - displacement = [0, 1]
 
 julia> bond_6 = Bond([3,2],[-1,1])
 Bond:
- - D  = 2
- - o  = [3, 2]
- - Δl = [-1, 1]
+ - D = 2
+ - orbitals = [3, 2]
+ - displacement = [-1, 1]
 ```
 
 Now we are ready to build the corresponding neighbor table:
@@ -189,8 +189,8 @@ row is also ascending. This sorting can be performed using the [`sort_neighbor_t
 method:
 
 ```jldoctest kagome
-julia> inv_perm = sort_neighbor_table!(neighbor_table); neighbor_table
-2×54 Matrix{Int64}:
- 1  1  1   1  2  2   2   3   3  4  4  …  20  20  22  22  23  23  25  25  26
- 2  3  8  21  3  4  24  10  17  5  6     21  22  23  24  24  25  26  27  27
+julia> inv_perm = sort_neighbor_table!(neighbor_table); neighbor_table[:,1:20]
+2×20 Matrix{Int64}:
+ 1  1  1   1  2  2   2   3   3  4  4   4  5  5   5   6   6  7  7   7
+ 2  3  8  21  3  4  24  10  17  5  6  24  6  7  27  11  13  8  9  27
 ```

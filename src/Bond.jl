@@ -12,22 +12,24 @@ struct Bond
     D::Int
 
     "Initial and final orbital species respectively."
-    o::Vector{Int}
+    orbitals::Vector{Int}
 
     "Displacement in unit cells."
-    Δl::Vector{Int}
+    displacement::Vector{Int}
 end
 
 """
-    Bond(Δl::AbstractVector{Int},o::AbstractVector{Int})
+    Bond(orbitals::AbstractVector{Int}, displacement::AbstractVector{Int})
 
 Constrcut a [`Bond`](@ref)
 """
-function Bond(o::AbstractVector{Int},Δl::AbstractVector{Int})
+function Bond(orbitals::AbstractVector{Int},displacement::AbstractVector{Int})
 
-    D = length(Δl)
-    return  Bond(D,o,Δl)
+    D = length(displacement)
+    return  Bond(D,orbitals,displacement)
 end
+
+Bond(; orbitals, displacement) = Bond(orbitals,displacement)
 
 
 """
@@ -36,13 +38,13 @@ end
 
 Show lattice.
 """
-Base.show(io::IO, bond::Bond) = print(io,"Bond(D=$(bond.D), ",bond.o,", ",bond.Δl)
+Base.show(io::IO, bond::Bond) = print(io,"Bond(", (bond.D),", ",bond.o,", ",bond.Δl)
 function Base.show(io::IO, ::MIME"text/plain", bond::Bond)
 
-    (; D, o, Δl) = bond
-    println(io, "Bond:")
-    println(io, " - D  = ", D)
-    println(io, " - o  = ", o)
-    println(io, " - Δl = ", Δl)
+    (; D, orbitals, displacement) = bond
+    print(io, "Bond:\n")
+    print(io, " - D = ", D, "\n")
+    print(io, " - orbitals = ", orbitals, "\n")
+    print(io, " - displacement = ", displacement)
     return nothing
 end

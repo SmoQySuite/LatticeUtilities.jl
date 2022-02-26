@@ -59,6 +59,8 @@ function UnitCell(lattice_vecs::AbstractVector{Vector{T}}, basis_vecs::AbstractV
     return UnitCell(hcat(lattice_vecs...), hcat(basis_vecs...))
 end
 
+UnitCell(; lattice_vecs, basis_vecs) = UnitCell(lattice_vecs, basis_vecs)
+
 
 """
     Base.show(io::IO, uc::UnitCell{T}) where {T}
@@ -86,8 +88,8 @@ end
 
 
 """
-    loc_to_pos!(r::AbstractVector{T}, l::AbstractVector{Int}, unit_cell::UnitCell{T})
-        where {T}
+    loc_to_pos!(r::AbstractVector{T}, l::AbstractVector{Int},
+        unit_cell::UnitCell{T}) where {T}
 
 Calculate the position `r` of a unit cell at location `l`.
 """
@@ -104,9 +106,11 @@ function loc_to_pos!(r::AbstractVector{T}, l::AbstractVector{Int}, unit_cell::Un
     return nothing
 end
 
+loc_to_pos!(; r, l, unit_cell) = loc_to_pos!(r, l, unit_cell)
+
 """
-    loc_to_pos!(r::AbstractVector{T}, l::AbstractVector{Int}, s::Int, unit_cell::UnitCell{T})
-        where {T}
+    loc_to_pos!(r::AbstractVector{T}, l::AbstractVector{Int}, s::Int,
+        unit_cell::UnitCell{T}) where {T}
 
 Calculate the position `r` of a orbital `o` at location `l`.
 """
@@ -117,6 +121,8 @@ function loc_to_pos!(r::AbstractVector{T}, l::AbstractVector{Int}, o::Int, unit_
 
     return nothing
 end
+
+loc_to_pos!(; r, l, o, unit_cell) = loc_to_pos!(r, l, o, unit_cell)
 
 """
     loc_to_pos(l::AbstractVector{Int}, unit_cell::UnitCell{T})
@@ -132,6 +138,8 @@ function loc_to_pos(l::AbstractVector{Int}, unit_cell::UnitCell{T}) where {T}
     return r
 end
 
+loc_to_pos(; l, unit_cell) = loc_to_pos(l, unit_cell)
+
 """
     loc_to_pos(l::AbstractVector{Int}, s::Int, unit_cell::UnitCell{T})
         where {T}
@@ -145,6 +153,8 @@ function loc_to_pos(l::AbstractVector{Int}, o::Int, unit_cell::UnitCell{T}) wher
 
     return r
 end
+
+loc_to_pos(; l, o, unit_cell) = loc_to_pos(l, o, unit_cell)
 
 
 """
@@ -177,6 +187,8 @@ function displacement_to_vec!(Δr::AbstractVector{T}, Δl::AbstractVector{Int}, 
     return nothing
 end
 
+displacement_to_vec!(; Δr, Δl, o₁, o₂, unit_cell) = displacement_to_vec!(Δr, Δl, o₁, o₂, unit_cell)
+
 """
     displacement_to_vec(Δl::AbstractVector{Int}, o₁::Int, o₂::Int,
         unit_cell::UnitCell{T}) where {T}
@@ -191,3 +203,5 @@ function displacement_to_vec(Δl::AbstractVector{Int}, o₁::Int, o₂::Int, uni
 
     return Δr
 end
+
+displacement_to_vec(; Δl, o₁, o₂, unit_cell) = displacement_to_vec(Δl, o₁, o₂, unit_cell)

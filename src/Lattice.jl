@@ -25,7 +25,7 @@ struct Lattice
 end
 
 """
-    Lattice(L::Vector{Int},periodic::Vector{Bool})
+    Lattice(L::Vector{Int}, periodic::Vector{Bool})
 
 Constructs a [`Lattice`](@ref).
 """
@@ -44,6 +44,8 @@ function Lattice(L::Vector{Int},periodic::Vector{Bool})
 
     return Lattice(D,N,L,periodic,lvec)
 end
+
+Lattice(; L, periodic) = Lattice(L,periodic)
 
 
 """
@@ -67,18 +69,18 @@ end
 
 
 """
-    valid_location(loc::AbstractVector{Int}, lat::Lattice)
+    valid_location(l::AbstractVector{Int}, lattice::Lattice)
 
-Determine if `loc` describes a valid location in the lattice.
+Determine if `l` describes a valid location in the lattice.
 """
-function valid_location(loc::AbstractVector{Int}, lat::Lattice)
+function valid_loc(l::AbstractVector{Int}, lattice::Lattice)
 
-    (; D, N, L) = lat
+    (; D, N, L) = lattice
 
     isvalid = true
     # check if location valid in each direction
     for d in 1:D
-        if !(0<=loc[d]<L[d])
+        if !(0<=l[d]<L[d])
             isvalid = false
             break
         end
@@ -87,37 +89,41 @@ function valid_location(loc::AbstractVector{Int}, lat::Lattice)
     return isvalid
 end
 
+valid_loc(; l, lattice) = valid_loc(l, lattice)
+
 
 """
-    pbc!(loc::AbstractVector{Int}, lat::Lattice)
+    pbc!(l::AbstractVector{Int}, lattice::Lattice)
 
-Apply periodic boundary to unit cell location `loc`.
+Apply periodic boundary to unit cell location `l`.
 """
-function pbc!(loc::AbstractVector{Int}, lattice::Lattice)
+function pbc!(l::AbstractVector{Int}, lattice::Lattice)
 
     (; D, N, L, periodic) = lattice
-    @assert length(loc) == D
+    @assert length(l) == D
     for d in 1:D
         # check if given direction in lattice is periodic
         if periodic[d]
             # make sure each value is positive
-            if loc[d] < 0
-                loc[d] = loc[d] + L[d] * (abs(loc[d])÷L[d] + 1)
+            if l[d] < 0
+                l[d] = l[d] + L[d] * (abs(l[d])÷L[d] + 1)
             end
             # apply periodic boundary conditions
-            loc[d] = mod(loc[d], L[d])
+            l[d] = mod(l[d], L[d])
         end
     end
     return nothing
 end
 
+pbc!(; l, lattice) = pbc!(l, lattice)
+
 
 """
-    unitcell_to_loc!(loc::AbstractVector{Int},u::Int,lattice::Lattice)
+    unitcell_to_loc!(l::AbstractVector{Int}, u::Int, lattice::Lattice)
 
 Calculate the location `l` of a unit cell `u`.
 """
-function unitcell_to_loc!(l::AbstractVector{Int},u::Int,lattice::Lattice)
+function unitcell_to_loc!(l::AbstractVector{Int}, u::Int, lattice::Lattice)
 
     (; D, N, L) = lattice
     @assert length(l) == D
@@ -131,29 +137,33 @@ function unitcell_to_loc!(l::AbstractVector{Int},u::Int,lattice::Lattice)
     return nothing
 end
 
-"""
-    unitcell_to_loc(u::Int,lattice::Lattice)
+unitcell_to_loc!(; l, u, lattice) = unitcell_to_loc!(l, u, lattice)
 
-Return the location `l` of a unit cell `u`.
 """
-function unitcell_to_loc(u::Int,lattice::Lattice)
+    unitcell_to_loc(u::Int, lattice::Lattice)
+
+Return the location of unit cell `u`.
+"""
+function unitcell_to_loc(u::Int, lattice::Lattice)
 
     l = zeros(Int,lattice.D)
     unitcell_to_loc!(l,u,lattice)
     return l
 end
 
+unitcell_to_loc(; u, lattice) = unitcell_to_loc(u, lattice)
+
 
 """
-    loc_to_unitcell(loc::AbstractVector{Int},lattice::Lattice)
+    loca_to_unitcell(l::AbstractVector{Int}, lattice::Lattice)
 
-Return the unit cell `u` found at location `l` in the lattice.
+Return the unit cell found at location `l` in the lattice.
 """
-function loc_to_unitcell(l::AbstractVector{Int},lattice::Lattice)
+function loc_to_unitcell(l::AbstractVector{Int}, lattice::Lattice)
 
     (; D, N, L) = lattice
     @assert length(l) == D
-    @assert valid_location(l,lattice)
+    @assert valid_loc(l, lattice)
 
     u = 1
     for d in D:-1:1
@@ -163,3 +173,5 @@ function loc_to_unitcell(l::AbstractVector{Int},lattice::Lattice)
 
     return u
 end
+
+loc_to_unitcell(; l, lattice) = loc_to_unitcell(l, lattice)
