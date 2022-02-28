@@ -1,4 +1,4 @@
-<img src="https://github.com/cohensbw/LatticeUtilities.jl/tree/master/docs/src/assets/logo.svg" width="25%">
+<img src="https://github.com/cohensbw/LatticeUtilities.jl/tree/master/docs/src/assets/logo.pdf" width="300">>
 
 # LatticeUtilities.jl
 
@@ -10,3 +10,10 @@
 This package exports a suite of types and methods useful for defining arbitrary lattice geometries, and constructing neighbor tables.
 The [`LatticeUtilities.jl`](https://github.com/cohensbw/LatticeUtilities.jl) package is intended to be a lightweigh utility package
 useful in the development of other, more complicated packages.
+
+## Installation
+To install [`LatticeUtilities.jl`](https://github.com/cohensbw/LatticeUtilities.jl) run following in the Julia REPL:
+
+```julia
+] add https://github.com/cohensbw/LatticeUtilities.jl
+```
