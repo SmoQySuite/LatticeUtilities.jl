@@ -1,5 +1,3 @@
-<img src="https://github.com/cohensbw/LatticeUtilities.jl/tree/master/docs/src/assets/logo.png" width="250">
-
 # LatticeUtilities.jl
 
 [![CI](https://github.com/cohensbw/LatticeUtilities.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/cohensbw/LatticeUtilities.jl/actions/workflows/CI.yml)
