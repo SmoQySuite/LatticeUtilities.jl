@@ -339,58 +339,6 @@ build_neighbor_table(; bonds, unit_cell, lattice) = build_neighbor_table(bonds, 
 
 
 """
-    sort_neighbor_table!(neighbor_table::Matrix{Int})
-
-Sorts `neighbor_table` so that the first row is in strictly ascending order, and for fixed values
-in the first row, the second row is also in ascending order.
-Also returns the inverse of the sorting perumtation, so original order of neighbors in `neighbor_table`
-can be easily recovered.
-"""
-function sort_neighbor_table!(neighbor_table::Matrix{Int})
-
-    perm = sorted_neighbor_table_perm!(neighbor_table)
-    @views @. neighbor_table = neighbor_table[:,perm]
-    inv_perm = sortperm(perm)
-
-    return inv_perm
-end
-
-sort_neighbor_table!(; neighbor_table) = sort_neighbor_table!(neighbor_table)
-
-"""
-    sorted_neighbor_table_perm!(neighbor_table::Matrix{Int})
-
-Returns the permutation that sorts `neighbor_table` so that the first row is in strictly ascending order,
-and for fixed values in the first row, the second row is also in ascending order. This method also modifies
-the `neighbor_table` such that the smaller index in each column is always in the first row.
-"""
-function sorted_neighbor_table_perm!(neighbor_table::Matrix{Int})
-    
-    @assert size(neighbor_table,1)==2
-
-    # make sure smaller number is always in first column of neighbor table
-    for i in 1:size(neighbor_table,2)
-        c1 = neighbor_table[1,i]
-        c2 = neighbor_table[2,i]
-        if c1 > c2
-            neighbor_table[1,i] = c2
-            neighbor_table[2,i] = c1
-        end
-    end
-
-    top_row    = @view neighbor_table[1,:]
-    bottom_row = @view neighbor_table[2,:]
-    max_index  = maximum(neighbor_table)
-    vals       = max_index * top_row + bottom_row
-    perm       = sortperm(vals)
-
-    return perm
-end
-
-sorted_neighbor_table_perm!(; neighbor_table) = sorted_neighbor_table_perm!(neighbor_table)
-
-
-"""
     function translational_avg!(fg::AbstractArray{Complex{T}}, f::AbstractArray{Complex{T}},
         g::AbstractArray{Complex{T}}; restore::Bool=true) where {T<:AbstractFloat}
 

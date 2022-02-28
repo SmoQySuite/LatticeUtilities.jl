@@ -182,15 +182,3 @@ julia> neighbor_table = build_neighbor_table([bond_1, bond_2, bond_3,
  1  4  7  10  13  16  19  22  25  1  4  …   3   6   9  12  15  18  21  24  27
  2  5  8  11  14  17  20  23  26  3  6     17  11  14  26  20  23   8   2   5
 ```
-
-In certain situations it is useful to sort `neighbor_table` so that the first row
-is in strictly ascending order, and for constant value in the first row the second
-row is also ascending. This sorting can be performed using the [`sort_neighbor_table!`](@ref)
-method:
-
-```jldoctest kagome
-julia> inv_perm = sort_neighbor_table!(neighbor_table); neighbor_table[:,1:20]
-2×20 Matrix{Int64}:
- 1  1  1   1  2  2   2   3   3  4  4   4  5  5   5   6   6  7  7   7
- 2  3  8  21  3  4  24  10  17  5  6  24  6  7  27  11  13  8  9  27
-```

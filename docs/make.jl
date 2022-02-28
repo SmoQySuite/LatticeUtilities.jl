@@ -12,9 +12,12 @@ makedocs(
         "Getting Started" => "getting_started.md",
         "Examples"        => "examples.md",
         "API"             => "api.md"
-    ]
+    ],
+    format = Documenter.HTML(
+        prettyurls = get(ENV, "CI", nothing) == "true"
+    )
 )
 
 deploydocs(
-    repo = "github.com/cohensbw/LatticeUtilities.jl.git",
+    repo = "github.com/cohensbw/LatticeUtilities.jl.git"
 )

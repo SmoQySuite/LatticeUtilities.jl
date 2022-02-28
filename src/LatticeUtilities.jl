@@ -26,6 +26,5 @@ export calc_k_point!, calc_k_point
 export calc_k_points!, calc_k_points
 export bond_to_vec!, bond_to_vec
 export build_neighbor_table
-export sort_neighbor_table!, sorted_neighbor_table_perm!
 
 end # module
