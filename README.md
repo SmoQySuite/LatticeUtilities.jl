@@ -1,4 +1,4 @@
-<img src="https://github.com/cohensbw/LatticeUtilities.jl/tree/master/docs/src/assets/logo.pdf" width="300">>
+<img src="https://github.com/cohensbw/LatticeUtilities.jl/tree/master/docs/src/assets/logo.png" width="250">
 
 # LatticeUtilities.jl
 
