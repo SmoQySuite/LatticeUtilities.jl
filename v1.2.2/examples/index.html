@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Examples · LatticeUtilities.jl</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.039/juliamono-regular.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.svg" alt="LatticeUtilities.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">LatticeUtilities.jl</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><a class="tocitem" href="../getting_started/">Getting Started</a></li><li class="is-active"><a class="tocitem" href>Examples</a><ul class="internal"><li><a class="tocitem" href="#Kagome-Lattice"><span>Kagome Lattice</span></a></li></ul></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Examples</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/cohensbw/LatticeUtilities.jl/blob/master/docs/src/examples.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Examples"><a class="docs-heading-anchor" href="#Examples">Examples</a><a id="Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Examples" title="Permalink"></a></h1><p>This page includes several examples on how to use the <a href="https://cohensbw.github.io/LatticeUtilities.jl/dev/"><code>LatticeUtilities.jl</code></a> package.</p><h2 id="Kagome-Lattice"><a class="docs-heading-anchor" href="#Kagome-Lattice">Kagome Lattice</a><a id="Kagome-Lattice-1"></a><a class="docs-heading-anchor-permalink" href="#Kagome-Lattice" title="Permalink"></a></h2><p>As a first example we will represent a Kagome lattice. The lattice vectors for the Kagome lattice are</p><p class="math-container">\[\begin{align*}
+\mathbf{a}_{1} &amp;= \left(1,0\right)\\
+\mathbf{a}_{2} &amp;= \left(\frac{1}{2},\frac{\sqrt{3}}{2}\right),
+\end{align*}\]</p><p>and with three orbitals per unit cell, the basis vectors are</p><p class="math-container">\[\begin{align*}
+\mathbf{r}_{{\rm 1}} &amp;= \left(0,0\right)\\
+\mathbf{r}_{{\rm 2}} &amp;= \left(\frac{1}{2},0\right)\\
+\mathbf{r}_{{\rm 3}} &amp;= \left(\frac{1}{4},\frac{\sqrt{3}}{4}\right).
+\end{align*}\]</p><p>The reciprocal lattice vectors are then</p><p class="math-container">\[\begin{align*}
+\mathbf{b}_{1} &amp;= 2\pi \left(1,-\frac{1}{\sqrt{3}}\right)\\
+\mathbf{b}_{2} &amp;= 2\pi \left(0,\frac{2}{\sqrt{3}}\right).
+\end{align*}\]</p><p>We begin by constructing an instance of the type <a href="../api/#LatticeUtilities.UnitCell"><code>UnitCell</code></a> to represent the Kagome lattice unit cell:</p><pre><code class="language-julia-repl hljs">julia&gt; kagome = UnitCell(lattice_vecs = [[1.0,0.0], [1/2,√3/2]],
+                         basis_vecs   = [[0.0,0.0], [1/2,0.0], [1/4,√3/4]])
+UnitCell{Float64}:
+ • D = 2
+ • n = 3
+ • lattice_vecs =
+2×2 Matrix{Float64}:
+ 1.0  0.5
+ 0.0  0.866025
+ • reciprocal_vecs =
+2×2 Matrix{Float64}:
+  6.28319  0.0
+ -3.6276   7.2552
+ • basis_vecs =
+2×3 Matrix{Float64}:
+ 0.0  0.5  0.25
+ 0.0  0.0  0.433013</code></pre><p>It is straightforward to calculate position space vectors of the form <span>$\mathbf{r} = n_1 \mathbf{a}_1 + n_2 \mathbf{a}_2 + \mathbf{r}_\alpha$</span> using the method <a href="../api/#LatticeUtilities.loc_to_pos-Union{Tuple{T}, Tuple{AbstractVector{Int64}, Int64, UnitCell{T}}} where T"><code>loc_to_pos</code></a>, where <span>$\mathbf{r}_\alpha$</span> is one of the three possible basis vectors:</p><pre><code class="language-julia-repl hljs">julia&gt; n₁,n₂,α = 1,1,2
+(1, 1, 2)
+
+julia&gt; loc_to_pos([n₁,n₂],α,kagome)
+2-element Vector{Float64}:
+ 2.0
+ 0.8660254037844386</code></pre><p>Displacement vectors of the form <span>$\mathbf{r} = n_1 \mathbf{a}_1 + n_2 \mathbf{a}_2 + (\mathbf{r}_\beta - \mathbf{r}_\alpha)$</span> can also be caluculated using the <a href="../api/#LatticeUtilities.displacement_to_vec-Union{Tuple{T}, Tuple{AbstractVector{Int64}, Int64, Int64, UnitCell{T}}} where T"><code>displacement_to_vec</code></a> method:</p><pre><code class="language-julia-repl hljs">julia&gt; n₁,n₂,α,β = 1,1,2,3
+(1, 1, 2, 3)
+
+julia&gt; displacement_to_vec([n₁,n₂],α,β,kagome)
+2-element Vector{Float64}:
+ 1.25
+ 1.299038105676658</code></pre><p>Note that there are memory allocation free variants of many methods, such as <a href="../api/#LatticeUtilities.loc_to_pos!-Union{Tuple{T}, Tuple{AbstractVector{T}, AbstractVector{Int64}, Int64, UnitCell{T}}} where T"><code>loc_to_pos!</code></a> and <a href="../api/#LatticeUtilities.displacement_to_vec!-Union{Tuple{T}, Tuple{AbstractVector{T}, AbstractVector{Int64}, Int64, Int64, UnitCell{T}}} where T"><code>displacement_to_vec!</code></a>, with names ending in <code>!</code> that work by modifying the first array argument in place.</p><p>The next step is to construct an instance of the type <a href="../api/#LatticeUtilities.Lattice"><code>Lattice</code></a>, which can be used in conjunction with a <a href="../api/#LatticeUtilities.UnitCell"><code>UnitCell</code></a> instance of like dimension <code>D</code>, to represent a finite lattice. In this example we will consider a <span>$3 \times 3$</span> unit cell Kagome lattice with periodic boundary conditions in the direction of both lattice vectors:</p><pre><code class="language-julia-repl hljs">julia&gt; lattice = Lattice(L = [3,3], periodic = [true,true])
+Lattice:
+ • D = 2
+ • N = 9
+ • L = [3, 3]
+ • periodic = Bool[1, 1]</code></pre><p>Given an initial site, a displacement in unit cells, and a terminating orbital species, we can calculate the final site using the <a href="../api/#LatticeUtilities.site_to_site-Tuple{Int64, AbstractVector{Int64}, Int64, UnitCell, Lattice}"><code>site_to_site</code></a> method:</p><pre><code class="language-julia-repl hljs">julia&gt; site_to_site(17, [1,1], 2, kagome, lattice)
+20</code></pre><p>We can also calculate the k-points associated with out finite lattice using the <a href="../api/#LatticeUtilities.calc_k_points-Union{Tuple{T}, Tuple{UnitCell{T}, Lattice}} where T"><code>calc_k_points</code></a> method:</p><pre><code class="language-julia-repl hljs">julia&gt; calc_k_points(kagome,lattice)
+2×3×3 Array{Float64, 3}:
+[:, :, 1] =
+ 0.0   2.0944   4.18879
+ 0.0  -1.2092  -2.4184
+
+[:, :, 2] =
+ 0.0     2.0944  4.18879
+ 2.4184  1.2092  0.0
+
+[:, :, 3] =
+ 0.0     2.0944  4.18879
+ 4.8368  3.6276  2.4184</code></pre><p>Individual k-points can be caluclated using the <a href="../api/#LatticeUtilities.calc_k_point-Union{Tuple{T}, Tuple{AbstractVector{Int64}, UnitCell{T}, Lattice}} where T"><code>calc_k_point</code></a> and <a href="../api/#LatticeUtilities.calc_k_point!-Union{Tuple{T}, Tuple{AbstractVector{T}, AbstractVector{Int64}, UnitCell{T}, Lattice}} where T"><code>calc_k_point!</code></a> methods.</p><p>If we concern ourselves with just nearest neighbor bonds, we need to define six instances of <a href="../api/#LatticeUtilities.Bond"><code>Bond</code></a> type:</p><pre><code class="language-julia-repl hljs">julia&gt; bond_1 = Bond(orbitals = [1,2], displacement = [0,0])
+Bond:
+ • D = 2
+ • orbitals = [1, 2]
+ • displacement = [0, 0]
+
+julia&gt; bond_2 = Bond([1,3], [0,0])
+Bond:
+ • D = 2
+ • orbitals = [1, 3]
+ • displacement = [0, 0]
+
+julia&gt; bond_3 = Bond([2,3], [0,0])
+Bond:
+ • D = 2
+ • orbitals = [2, 3]
+ • displacement = [0, 0]
+
+julia&gt; bond_4 = Bond([2,1], [1,0])
+Bond:
+ • D = 2
+ • orbitals = [2, 1]
+ • displacement = [1, 0]
+
+julia&gt; bond_5 = Bond([3,1], [0,1])
+Bond:
+ • D = 2
+ • orbitals = [3, 1]
+ • displacement = [0, 1]
+
+julia&gt; bond_6 = Bond([3,2], [-1,1])
+Bond:
+ • D = 2
+ • orbitals = [3, 2]
+ • displacement = [-1, 1]</code></pre><p>Now we are ready to build the corresponding neighbor table:</p><pre><code class="language-julia-repl hljs">julia&gt; neighbor_table = build_neighbor_table([bond_1, bond_2, bond_3,
+                                              bond_4, bond_5, bond_6],
+                                              kagome, lattice)
+2×54 Matrix{Int64}:
+ 1  4  7  10  13  16  19  22  25  1  4  …   3   6   9  12  15  18  21  24  27
+ 2  5  8  11  14  17  20  23  26  3  6     17  11  14  26  20  23   8   2   5</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../getting_started/">« Getting Started</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.13 on <span class="colophon-date" title="Wednesday 2 March 2022 05:54">Wednesday 2 March 2022</span>. Using Julia version 1.7.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
