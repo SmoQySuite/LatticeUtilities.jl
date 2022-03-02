@@ -43,8 +43,8 @@ function Base.show(io::IO, ::MIME"text/plain", bond::Bond)
 
     (; D, orbitals, displacement) = bond
     print(io, "Bond:\n")
-    print(io, " - D = ", D, "\n")
-    print(io, " - orbitals = ", orbitals, "\n")
-    print(io, " - displacement = ", displacement)
+    print(io, " • D = ", D, "\n")
+    print(io, " • orbitals = ", orbitals, "\n")
+    print(io, " • displacement = ", displacement)
     return nothing
 end

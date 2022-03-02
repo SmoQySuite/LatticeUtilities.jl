@@ -41,17 +41,17 @@ the Kagome lattice unit cell:
 julia> kagome = UnitCell(lattice_vecs = [[1.0,0.0], [1/2,√3/2]],
                          basis_vecs   = [[0.0,0.0], [1/2,0.0], [1/4,√3/4]])
 UnitCell{Float64}:
- - D = 2
- - n = 3
- - lattice_vecs =
+ • D = 2
+ • n = 3
+ • lattice_vecs =
 2×2 Matrix{Float64}:
  1.0  0.5
  0.0  0.866025
- - reciprocal_vecs =
+ • reciprocal_vecs =
 2×2 Matrix{Float64}:
   6.28319  0.0
  -3.6276   7.2552
- - basis_vecs =
+ • basis_vecs =
 2×3 Matrix{Float64}:
  0.0  0.5  0.25
  0.0  0.0  0.433013
@@ -98,10 +98,10 @@ in the direction of both lattice vectors:
 ```jldoctest kagome
 julia> lattice = Lattice(L = [3,3], periodic = [true,true])
 Lattice:
- - D = 2
- - N = 9
- - L = [3, 3]
- - periodic = Bool[1, 1]
+ • D = 2
+ • N = 9
+ • L = [3, 3]
+ • periodic = Bool[1, 1]
 ```
 
 Given an initial site, a displacement in unit cells, and a terminating orbital species,
@@ -136,41 +136,41 @@ If we concern ourselves with just nearest neighbor bonds, we need to define six 
 [`Bond`](@ref) type:
 
 ```jldoctest kagome
-julia> bond_1 = Bond(orbitals=[1,2], displacement=[0,0])
+julia> bond_1 = Bond(orbitals = [1,2], displacement = [0,0])
 Bond:
- - D = 2
- - orbitals = [1, 2]
- - displacement = [0, 0]
+ • D = 2
+ • orbitals = [1, 2]
+ • displacement = [0, 0]
 
 julia> bond_2 = Bond([1,3], [0,0])
 Bond:
- - D = 2
- - orbitals = [1, 3]
- - displacement = [0, 0]
+ • D = 2
+ • orbitals = [1, 3]
+ • displacement = [0, 0]
 
-julia> bond_3 = Bond([2,3],[0,0])
+julia> bond_3 = Bond([2,3], [0,0])
 Bond:
- - D = 2
- - orbitals = [2, 3]
- - displacement = [0, 0]
+ • D = 2
+ • orbitals = [2, 3]
+ • displacement = [0, 0]
 
-julia> bond_4 = Bond([2,1],[1,0])
+julia> bond_4 = Bond([2,1], [1,0])
 Bond:
- - D = 2
- - orbitals = [2, 1]
- - displacement = [1, 0]
+ • D = 2
+ • orbitals = [2, 1]
+ • displacement = [1, 0]
 
-julia> bond_5 = Bond([3,1],[0,1])
+julia> bond_5 = Bond([3,1], [0,1])
 Bond:
- - D = 2
- - orbitals = [3, 1]
- - displacement = [0, 1]
+ • D = 2
+ • orbitals = [3, 1]
+ • displacement = [0, 1]
 
-julia> bond_6 = Bond([3,2],[-1,1])
+julia> bond_6 = Bond([3,2], [-1,1])
 Bond:
- - D = 2
- - orbitals = [3, 2]
- - displacement = [-1, 1]
+ • D = 2
+ • orbitals = [3, 2]
+ • displacement = [-1, 1]
 ```
 
 Now we are ready to build the corresponding neighbor table:
