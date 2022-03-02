@@ -12,7 +12,7 @@ to represent the unit cell for a cubic lattice:
 
 ```jldoctest getting_started
 julia> cubic = UnitCell(lattice_vecs = [[1.,0.,0.], [0.,1.,0.], [0.,0.,1.]],
-                        basis_vecs = [[0.,0.,0.]] )
+                        basis_vecs   = [[0.,0.,0.]])
 UnitCell{Float64}:
  - D = 3
  - n = 1
@@ -73,9 +73,8 @@ Using these three bond defintions, we can construct the corresponding neighbor t
 using the [`build_neighbor_table`](@ref) method:
 
 ```jldoctest getting_started
-julia> neighbor_table = build_neighbor_table([bond_x,bond_y,bond_z],
-                                             cubic, lattice); neighbor_table[:,1:20]
-2×20 Matrix{Int64}:
- 1  2  3  4  5  6  7  8   9  10  11  12  13  14  15  16  17  18  19  20
- 2  3  4  1  6  7  8  5  10  11  12   9  14  15  16  13  18  19  20  17
+julia> neighbor_table = build_neighbor_table([bond_x,bond_y,bond_z], cubic, lattice)
+2×192 Matrix{Int64}:
+ 1  2  3  4  5  6  7  8   9  10  11  …  56  57  58  59  60  61  62  63  64
+ 2  3  4  1  6  7  8  5  10  11  12      8   9  10  11  12  13  14  15  16
 ```

@@ -39,7 +39,7 @@ the Kagome lattice unit cell:
 
 ```jldoctest kagome; setup = :(using LatticeUtilities)
 julia> kagome = UnitCell(lattice_vecs = [[1.0,0.0], [1/2,√3/2]],
-                         basis_vecs = [[0.0,0.0], [1/2,0.0], [1/4,√3/4]] )
+                         basis_vecs   = [[0.0,0.0], [1/2,0.0], [1/4,√3/4]])
 UnitCell{Float64}:
  - D = 2
  - n = 3
