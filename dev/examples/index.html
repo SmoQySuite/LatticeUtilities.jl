@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Examples · LatticeUtilities.jl</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.039/juliamono-regular.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.svg" alt="LatticeUtilities.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">LatticeUtilities.jl</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><a class="tocitem" href="../getting_started/">Getting Started</a></li><li class="is-active"><a class="tocitem" href>Examples</a><ul class="internal"><li><a class="tocitem" href="#Kagome-Lattice"><span>Kagome Lattice</span></a></li></ul></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Examples</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/cohensbw/LatticeUtilities.jl/blob/master/docs/src/examples.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Examples"><a class="docs-heading-anchor" href="#Examples">Examples</a><a id="Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Examples" title="Permalink"></a></h1><p>This page includes several examples on how to use the <a href="https://cohensbw.github.io/LatticeUtilities.jl/dev/"><code>LatticeUtilities.jl</code></a> package.</p><h2 id="Kagome-Lattice"><a class="docs-heading-anchor" href="#Kagome-Lattice">Kagome Lattice</a><a id="Kagome-Lattice-1"></a><a class="docs-heading-anchor-permalink" href="#Kagome-Lattice" title="Permalink"></a></h2><p>As a first example we will represent a Kagome lattice. The lattice vectors for the Kagome lattice are</p><p class="math-container">\[\begin{align*}
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Examples · LatticeUtilities.jl</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.039/juliamono-regular.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.svg" alt="LatticeUtilities.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">LatticeUtilities.jl</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><a class="tocitem" href="../getting_started/">Getting Started</a></li><li class="is-active"><a class="tocitem" href>Examples</a><ul class="internal"><li><a class="tocitem" href="#Kagome-Lattice"><span>Kagome Lattice</span></a></li><li><a class="tocitem" href="#Cubic-Lattice-and-Boundary-Conditions"><span>Cubic Lattice and Boundary Conditions</span></a></li><li><a class="tocitem" href="#Honeycomb-Lattice-and-Bond-Operations"><span>Honeycomb Lattice and Bond Operations</span></a></li></ul></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Examples</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/cohensbw/LatticeUtilities.jl/blob/master/docs/src/examples.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Examples"><a class="docs-heading-anchor" href="#Examples">Examples</a><a id="Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Examples" title="Permalink"></a></h1><p>This page includes several examples on how to use the <a href="https://cohensbw.github.io/LatticeUtilities.jl/dev/"><code>LatticeUtilities.jl</code></a> package.</p><h2 id="Kagome-Lattice"><a class="docs-heading-anchor" href="#Kagome-Lattice">Kagome Lattice</a><a id="Kagome-Lattice-1"></a><a class="docs-heading-anchor-permalink" href="#Kagome-Lattice" title="Permalink"></a></h2><p>As a first example we will represent a Kagome lattice. The lattice vectors for the Kagome lattice are</p><p class="math-container">\[\begin{align*}
 \mathbf{a}_{1} &amp;= \left(1,0\right)\\
 \mathbf{a}_{2} &amp;= \left(\frac{1}{2},\frac{\sqrt{3}}{2}\right),
 \end{align*}\]</p><p>and with three orbitals per unit cell, the basis vectors are</p><p class="math-container">\[\begin{align*}
@@ -43,7 +43,7 @@ Lattice:
  • N = 9
  • L = [3, 3]
  • periodic = Bool[1, 1]</code></pre><p>Given an initial site, a displacement in unit cells, and a terminating orbital species, we can calculate the final site using the <a href="../api/#LatticeUtilities.site_to_site-Tuple{Int64, AbstractVector{Int64}, Int64, UnitCell, Lattice}"><code>site_to_site</code></a> method:</p><pre><code class="language-julia-repl hljs">julia&gt; site_to_site(17, [1,1], 2, kagome, lattice)
-20</code></pre><p>We can also calculate the k-points associated with out finite lattice using the <a href="../api/#LatticeUtilities.calc_k_points-Union{Tuple{T}, Tuple{UnitCell{T}, Lattice}} where T"><code>calc_k_points</code></a> method:</p><pre><code class="language-julia-repl hljs">julia&gt; calc_k_points(kagome,lattice)
+20</code></pre><p>The set of relevant <span>$\mathbf{k}$</span>-points associated with a finite lattice in three dimensions is given by</p><p class="math-container">\[\mathbf{k} = \frac{n_1}{L_1}\mathbf{b}_1 + \frac{n_2}{L_2}\mathbf{b}_2 + \frac{n_3}{L_3}\mathbf{b}_3\]</p><p>where each index runs from <span>$n_i = 0, 1, \dots, L_i-1$</span>.<br/>This set of <span>$\mathbf{k}$</span>-points can be constructed using the <a href="../api/#LatticeUtilities.calc_k_points-Union{Tuple{T}, Tuple{UnitCell{T}, Lattice}} where T"><code>calc_k_points</code></a> method:</p><pre><code class="language-julia-repl hljs">julia&gt; calc_k_points(kagome,lattice)
 2×3×3 Array{Float64, 3}:
 [:, :, 1] =
  0.0   2.0944   4.18879
@@ -55,7 +55,7 @@ Lattice:
 
 [:, :, 3] =
  0.0     2.0944  4.18879
- 4.8368  3.6276  2.4184</code></pre><p>Individual k-points can be caluclated using the <a href="../api/#LatticeUtilities.calc_k_point-Union{Tuple{T}, Tuple{AbstractVector{Int64}, UnitCell{T}, Lattice}} where T"><code>calc_k_point</code></a> and <a href="../api/#LatticeUtilities.calc_k_point!-Union{Tuple{T}, Tuple{AbstractVector{T}, AbstractVector{Int64}, UnitCell{T}, Lattice}} where T"><code>calc_k_point!</code></a> methods.</p><p>If we concern ourselves with just nearest neighbor bonds, we need to define six instances of <a href="../api/#LatticeUtilities.Bond"><code>Bond</code></a> type:</p><pre><code class="language-julia-repl hljs">julia&gt; bond_1 = Bond(orbitals = [1,2], displacement = [0,0])
+ 4.8368  3.6276  2.4184</code></pre><p>Individual <span>$\mathbf{k}$</span>-points can be caluclated using the <a href="../api/#LatticeUtilities.calc_k_point-Union{Tuple{T}, Tuple{AbstractVector{Int64}, UnitCell{T}, Lattice}} where T"><code>calc_k_point</code></a> and <a href="../api/#LatticeUtilities.calc_k_point!-Union{Tuple{T}, Tuple{AbstractVector{T}, AbstractVector{Int64}, UnitCell{T}, Lattice}} where T"><code>calc_k_point!</code></a> methods.</p><p>If we concern ourselves with just nearest neighbor bonds, we need to define six instances of <a href="../api/#LatticeUtilities.Bond"><code>Bond</code></a> type:</p><pre><code class="language-julia-repl hljs">julia&gt; bond_1 = Bond(orbitals = [1,2], displacement = [0,0])
 Bond:
  • D = 2
  • orbitals = [1, 2]
@@ -94,4 +94,213 @@ Bond:
                                               kagome, lattice)
 2×54 Matrix{Int64}:
  1  4  7  10  13  16  19  22  25  1  4  …   3   6   9  12  15  18  21  24  27
- 2  5  8  11  14  17  20  23  26  3  6     17  11  14  26  20  23   8   2   5</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../getting_started/">« Getting Started</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.13 on <span class="colophon-date" title="Wednesday 2 March 2022 05:53">Wednesday 2 March 2022</span>. Using Julia version 1.7.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ 2  5  8  11  14  17  20  23  26  3  6     17  11  14  26  20  23   8   2   5</code></pre><p>It is frequently useful to have a reference that lists the neighbors associated with each site in the lattice, as well as the bonds, which are specified by a column index into <code>neighbor_table</code>. This information is returned by the function <a href="../api/#LatticeUtilities.map_neighbor_table-Tuple{Matrix{Int64}}"><code>map_neighbor_table</code></a>:</p><pre><code class="language-julia-repl hljs">julia&gt; neighbor_table_map = map_neighbor_table(neighbor_table)
+Dict{Int64, NamedTuple{(:bonds, :neighbors), Tuple{Vector{Int64}, Vector{Int64}}}} with 27 entries:
+  5  =&gt; (bonds = [2, 20, 29, 54], neighbors = [4, 6, 7, 27])
+  16 =&gt; (bonds = [6, 15, 32, 39], neighbors = [17, 18, 14, 9])
+  20 =&gt; (bonds = [7, 25, 34, 50], neighbors = [19, 21, 22, 15])
+  12 =&gt; (bonds = [13, 22, 40, 49], neighbors = [10, 11, 19, 26])
+  24 =&gt; (bonds = [17, 26, 44, 53], neighbors = [22, 23, 4, 2])
+  8  =&gt; (bonds = [3, 21, 30, 52], neighbors = [7, 9, 1, 21])
+  17 =&gt; (bonds = [6, 24, 33, 46], neighbors = [16, 18, 10, 3])
+  1  =&gt; (bonds = [1, 10, 30, 43], neighbors = [2, 3, 8, 21])
+  19 =&gt; (bonds = [7, 16, 36, 40], neighbors = [20, 21, 26, 12])
+  22 =&gt; (bonds = [8, 17, 34, 41], neighbors = [23, 24, 20, 15])
+  23 =&gt; (bonds = [8, 26, 35, 51], neighbors = [22, 24, 25, 18])
+  6  =&gt; (bonds = [11, 20, 38, 47], neighbors = [4, 5, 13, 11])
+  11 =&gt; (bonds = [4, 22, 31, 47], neighbors = [10, 12, 13, 6])
+  9  =&gt; (bonds = [12, 21, 39, 48], neighbors = [7, 8, 16, 14])
+  14 =&gt; (bonds = [5, 23, 32, 48], neighbors = [13, 15, 16, 9])
+  3  =&gt; (bonds = [10, 19, 37, 46], neighbors = [1, 2, 10, 17])
+  7  =&gt; (bonds = [3, 12, 29, 45], neighbors = [8, 9, 5, 27])
+  25 =&gt; (bonds = [9, 18, 35, 42], neighbors = [26, 27, 23, 18])
+  4  =&gt; (bonds = [2, 11, 28, 44], neighbors = [5, 6, 2, 24])
+  ⋮  =&gt; ⋮</code></pre><h2 id="Cubic-Lattice-and-Boundary-Conditions"><a class="docs-heading-anchor" href="#Cubic-Lattice-and-Boundary-Conditions">Cubic Lattice and Boundary Conditions</a><a id="Cubic-Lattice-and-Boundary-Conditions-1"></a><a class="docs-heading-anchor-permalink" href="#Cubic-Lattice-and-Boundary-Conditions" title="Permalink"></a></h2><p>In this section we consider a simple cubic lattice. As usual, we begin by defining a <a href="../api/#LatticeUtilities.UnitCell"><code>UnitCell</code></a>:</p><pre><code class="language-julia-repl hljs">julia&gt; cubic = UnitCell(lattice_vecs = [[1.,0.,0.],[0.,1.,0.],[0.,0.,1.]],
+                        basis_vecs   = [[0.,0.,0.]])
+UnitCell{Float64}:
+ • D = 3
+ • n = 1
+ • lattice_vecs =
+3×3 Matrix{Float64}:
+ 1.0  0.0  0.0
+ 0.0  1.0  0.0
+ 0.0  0.0  1.0
+ • reciprocal_vecs =
+3×3 Matrix{Float64}:
+ 6.28319  0.0      0.0
+ 0.0      6.28319  0.0
+ 0.0      0.0      6.28319
+ • basis_vecs =
+3×1 Matrix{Float64}:
+ 0.0
+ 0.0
+ 0.0</code></pre><p>Next we define four instances of the type <a href="../api/#LatticeUtilities.Lattice"><code>Lattice</code></a>. The first one represents a lattice that is periodic in the direction of all three lattice vectors:</p><pre><code class="language-julia-repl hljs">julia&gt; lattice_ppp = Lattice([4,4,4],[true,true,true])
+Lattice:
+ • D = 3
+ • N = 64
+ • L = [4, 4, 4]
+ • periodic = Bool[1, 1, 1]</code></pre><p>The second defines a lattice that is periodic only in the direction of the first two lattice vectors, <span>$\hat{\mathbf{x}}$</span> and <span>$\hat{\mathbf{y}}$</span>:</p><pre><code class="language-julia-repl hljs">julia&gt; lattice_ppo = Lattice([4,4,4],[true,true,false])
+Lattice:
+ • D = 3
+ • N = 64
+ • L = [4, 4, 4]
+ • periodic = Bool[1, 1, 0]</code></pre><p>The third defines a lattice that is periodic only in the direction of the first lattice vector, <span>$\hat{\mathbf{x}}$</span>:</p><pre><code class="language-julia-repl hljs">julia&gt; lattice_poo = Lattice([4,4,4],[true,false,false])
+Lattice:
+ • D = 3
+ • N = 64
+ • L = [4, 4, 4]
+ • periodic = Bool[1, 0, 0]</code></pre><p>Lastly, we define a lattice with strictly open boundary conditions:</p><pre><code class="language-julia-repl hljs">julia&gt; lattice_ooo = Lattice([4,4,4],[false,false,false])
+Lattice:
+ • D = 3
+ • N = 64
+ • L = [4, 4, 4]
+ • periodic = Bool[0, 0, 0]</code></pre><p>Note that the set of <span>$\mathbf{k}$</span>-points generated by the function <a href="../api/#LatticeUtilities.calc_k_points-Union{Tuple{T}, Tuple{UnitCell{T}, Lattice}} where T"><code>calc_k_points</code></a> changes with the boundary conditions. In particular, if a lattice has open boundary conditions in the direction of the lattice vector <span>$\mathbf{a}_i$</span>, then it treats <span>$L_i = 1$</span> when calculating the relevant set of <span>$\mathbf{k}$</span>-points associated with a lattice:</p><pre><code class="language-julia-repl hljs">julia&gt; size( calc_k_points(cubic,lattice_ppp) )
+(3, 4, 4, 4)
+
+julia&gt; size( calc_k_points(cubic,lattice_ppo) )
+(3, 4, 4, 1)
+
+julia&gt; size( calc_k_points(cubic,lattice_poo) )
+(3, 4, 1, 1)
+
+julia&gt; size( calc_k_points(cubic,lattice_ooo) )
+(3, 1, 1, 1)
+
+julia&gt; calc_k_points(cubic,lattice_ooo)
+3×1×1×1 Array{Float64, 4}:
+[:, :, 1, 1] =
+ 0.0
+ 0.0
+ 0.0</code></pre><p>As you can see, in the case that the lattice only has open boundary conditions, then just the <span>$\mathbf{k} = 0$</span> point is returned.</p><p>Next we will consider how the boundary conditions effect how neighbor tables are computed. Considering just nearest neighbors, we have three bonds to define:</p><pre><code class="language-julia-repl hljs">julia&gt; bond_x = Bond(orbitals = [1,1], displacement = [1,0,0])
+Bond:
+ • D = 3
+ • orbitals = [1, 1]
+ • displacement = [1, 0, 0]
+
+julia&gt; bond_y = Bond([1,1], [0,1,0])
+Bond:
+ • D = 3
+ • orbitals = [1, 1]
+ • displacement = [0, 1, 0]
+
+julia&gt; bond_z = Bond([1,1], [0,0,1])
+Bond:
+ • D = 3
+ • orbitals = [1, 1]
+ • displacement = [0, 0, 1]</code></pre><p>Base on these three bonds, the neighbor table generated using <a href="../api/#LatticeUtilities.build_neighbor_table-Tuple{AbstractVector{Bond}, UnitCell, Lattice}"><code>build_neighbor_table</code></a> will depend on the boundary conditions used:</p><pre><code class="language-julia-repl hljs">julia&gt; nt_ppp = build_neighbor_table([bond_x,bond_y,bond_z],
+                                      cubic, lattice_ppp)
+2×192 Matrix{Int64}:
+ 1  2  3  4  5  6  7  8   9  10  11  …  56  57  58  59  60  61  62  63  64
+ 2  3  4  1  6  7  8  5  10  11  12      8   9  10  11  12  13  14  15  16
+
+julia&gt; nt_ppo = build_neighbor_table([bond_x,bond_y,bond_z],
+                                      cubic, lattice_ppo)
+2×176 Matrix{Int64}:
+ 1  2  3  4  5  6  7  8   9  10  11  …  40  41  42  43  44  45  46  47  48
+ 2  3  4  1  6  7  8  5  10  11  12     56  57  58  59  60  61  62  63  64
+
+julia&gt; nt_poo = build_neighbor_table([bond_x,bond_y,bond_z],
+                                      cubic, lattice_poo)
+2×160 Matrix{Int64}:
+ 1  2  3  4  5  6  7  8   9  10  11  …  40  41  42  43  44  45  46  47  48
+ 2  3  4  1  6  7  8  5  10  11  12     56  57  58  59  60  61  62  63  64
+
+julia&gt; nt_ooo = build_neighbor_table([bond_x,bond_y,bond_z],
+                                      cubic, lattice_ooo)
+2×144 Matrix{Int64}:
+ 1  2  3  5  6  7   9  10  11  13  14  …  40  41  42  43  44  45  46  47  48
+ 2  3  4  6  7  8  10  11  12  14  15     56  57  58  59  60  61  62  63  64</code></pre><h2 id="Honeycomb-Lattice-and-Bond-Operations"><a class="docs-heading-anchor" href="#Honeycomb-Lattice-and-Bond-Operations">Honeycomb Lattice and Bond Operations</a><a id="Honeycomb-Lattice-and-Bond-Operations-1"></a><a class="docs-heading-anchor-permalink" href="#Honeycomb-Lattice-and-Bond-Operations" title="Permalink"></a></h2><p>In this section we consider the Honeycomb, or Hexagonal, lattice with just nearest neighbor interactions. The lattice vectors for the honeycomb lattice are</p><p class="math-container">\[\begin{align*}
+\mathbf{a}_{1} =&amp;	\left(\frac{3}{2},\frac{\sqrt{3}}{2}\right)\\
+\mathbf{a}_{2} =&amp;	\left(\frac{3}{2},-\frac{\sqrt{3}}{2}\right),
+\end{align*}\]</p><p>and basis vectors are</p><p class="math-container">\[\begin{align*}
+\mathbf{r}_{1} =&amp;	\left(0,0\right)\\
+\mathbf{r}_{2} =&amp;	\left(1,0\right).
+\end{align*}\]</p><p>The corresponding reciprocal lattice vectors are</p><p class="math-container">\[\begin{align*}
+\mathbf{b}_{1} =&amp;	2\pi\left(\frac{1}{3},\frac{\sqrt{3}}{3}\right)\\
+\mathbf{b}_{2} =&amp;	2\pi\left(\frac{1}{3},-\frac{\sqrt{3}}{3}\right).
+\end{align*}\]</p><p>As usual, we begin by constructing an instance of the type <a href="../api/#LatticeUtilities.UnitCell"><code>UnitCell</code></a> to reflect this:</p><pre><code class="language-julia-repl hljs">julia&gt; honeycomb = UnitCell(lattice_vecs = [[3/2,√3/2],[3/2,-√3/2]],
+                            basis_vecs   = [[0.,0.],[1.,0.]])
+UnitCell{Float64}:
+ • D = 2
+ • n = 2
+ • lattice_vecs =
+2×2 Matrix{Float64}:
+ 1.5        1.5
+ 0.866025  -0.866025
+ • reciprocal_vecs =
+2×2 Matrix{Float64}:
+ 2.0944   2.0944
+ 3.6276  -3.6276
+ • basis_vecs =
+2×2 Matrix{Float64}:
+ 0.0  1.0
+ 0.0  0.0</code></pre><p>And again, we define an instance of the type <a href="../api/#LatticeUtilities.Lattice"><code>Lattice</code></a> to represent a finite lattice:</p><pre><code class="language-julia-repl hljs">julia&gt; lattice = Lattice([3,3],[true,true])
+Lattice:
+ • D = 2
+ • N = 9
+ • L = [3, 3]
+ • periodic = Bool[1, 1]</code></pre><p>If we consider just nearest neighbor relations, three types of bonds need to be defined:</p><pre><code class="language-julia-repl hljs">julia&gt; bond_1 = Bond(orbitals = [0,1], displacement = [0,0])
+Bond:
+ • D = 2
+ • orbitals = [0, 1]
+ • displacement = [0, 0]
+
+julia&gt; bond_2 = Bond([0,1], [-1,0])
+Bond:
+ • D = 2
+ • orbitals = [0, 1]
+ • displacement = [-1, 0]
+
+julia&gt; bond_3 = Bond([0,1], [0,-1])
+Bond:
+ • D = 2
+ • orbitals = [0, 1]
+ • displacement = [0, -1]</code></pre><p>However, these three bond definitions are not unique. For instance, it would be similarly correct to define the nearest neighbor relations using these three bond defintions:</p><pre><code class="language-julia-repl hljs">julia&gt; bond_1′ = Bond(orbitals = [1,0], displacement = [0,0])
+Bond:
+ • D = 2
+ • orbitals = [1, 0]
+ • displacement = [0, 0]
+
+julia&gt; bond_2′ = Bond([1,0], [1,0])
+Bond:
+ • D = 2
+ • orbitals = [1, 0]
+ • displacement = [1, 0]
+
+julia&gt; bond_3′ = Bond([1,0], [0,1])
+Bond:
+ • D = 2
+ • orbitals = [1, 0]
+ • displacement = [0, 1]</code></pre><p>While the explicit definitions are different here, we can test for equivalencies.</p><pre><code class="language-julia-repl hljs">julia&gt; bond_1 == bond_1′
+true
+
+julia&gt; bond_2 == bond_2′
+true
+
+julia&gt; bond_3 == bond_3′
+true
+
+julia&gt; bond_1 == bond_2′
+false</code></pre><p>Note that while not explicitly enforced, for comparison operations like this to be valid each bond definition need to be defined assuming shared lattice vector definitions, which themselves are not unique.</p><p>Note that is also possible to <a href="../api/#LatticeUtilities.simplify!-Tuple{AbstractVector{Int64}, Lattice}"><code>simplify!</code></a> a bond, accounting for the size of a finite lattice and also periodic boundary conditions where necessary:</p><pre><code class="language-julia-repl hljs">julia&gt; bond′ = Bond([0,1],[2,0])
+Bond:
+ • D = 2
+ • orbitals = [0, 1]
+ • displacement = [2, 0]
+
+julia&gt; simplify!(bond′,lattice)
+
+julia&gt; bond′
+Bond:
+ • D = 2
+ • orbitals = [0, 1]
+ • displacement = [-1, 0]</code></pre><p>Lastly, given a pair of sites in a finite lattice, it is very easy to determine the bond defintion connecting the two sites using the <a href="../api/#LatticeUtilities.sites_to_bond-Tuple{Int64, Int64, UnitCell, Lattice}"><code>sites_to_bond</code></a> function:</p><pre><code class="language-julia-repl hljs">julia&gt; bond_1_2 = sites_to_bond(1, 2, honeycomb, lattice)
+Bond:
+ • D = 2
+ • orbitals = [1, 2]
+ • displacement = [0, 0]
+
+julia&gt; bond_1_3 = sites_to_bond(1, 3, honeycomb, lattice)
+Bond:
+ • D = 2
+ • orbitals = [1, 1]
+ • displacement = [1, 0]</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../getting_started/">« Getting Started</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.15 on <span class="colophon-date" title="Monday 28 March 2022 22:39">Monday 28 March 2022</span>. Using Julia version 1.7.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
