@@ -26,5 +26,9 @@ export calc_k_point!, calc_k_point
 export calc_k_points!, calc_k_points
 export bond_to_vec!, bond_to_vec
 export build_neighbor_table
+export simplify!
+export sites_to_displacement!, sites_to_displacement
+export sites_to_bond!, sites_to_bond
+export map_neighbor_table
 
 end # module

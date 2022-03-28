@@ -166,6 +166,128 @@ site_to_site(; s₁, Δl, o₂, unit_cell, lattice) = site_to_site(s₁, Δl, o�
 
 
 """
+    simplify!(Δl::AbstractVector{Int}, lattice::Lattice)
+
+Simplify displacement `Δl` so that it is as short as possible accounting
+for periodic boundary conditions where necessary.
+"""
+function simplify!(Δl::AbstractVector{Int}, lattice::Lattice)
+
+    (; L, D, periodic) = lattice
+
+    # simplify to shortest displacement accounting
+    # for periodic boundary conditions
+    for d in 1:D
+        if periodic[d] && abs(Δl[d]) > (L[d]÷2)
+            Δl[d] -= sign(Δl[d]) * L[d]
+        end
+    end
+
+    return nothing
+end
+
+simplify!(; Δl, lattice) = simplify!(Δl, lattice)
+
+"""
+    simplify!(bond::Bond, lattice::Lattice)
+
+Simplify a bond so that the displacement is the shortest possible accounting
+for periodic boundary conditions where necessary.
+"""
+function simplify!(bond::Bond, lattice::Lattice)
+
+    simplify!(bond.displacement, lattice)
+
+    return nothing
+end
+
+simplify!(; bond, lattice) = simplify!(bond, lattice)
+
+
+"""
+    function sites_to_displacement!(o::AbstractVector{Int}, Δl::AbstractVector{Int},
+        s₁::Int, s₂::Int, unit_cell::UnitCell, lattice::Lattice)
+
+When getting displaced from site `s₁` to `s₂`, calculate the initial and final orbitals `o`
+and displacement in unit cells `Δl`.
+"""
+function sites_to_displacement!(o::AbstractVector{Int}, Δl::AbstractVector{Int}, s₁::Int, s₂::Int,
+    unit_cell::UnitCell, lattice::Lattice)
+
+    @assert length(o) == 2
+    @assert length(Δl) == unit_cell.D
+
+    (; L, D, periodic) = lattice
+
+    # get initial and final orbital
+    o[1] = site_to_orbital(s₁, unit_cell, lattice)
+    o[2] = site_to_orbital(s₂, unit_cell, lattice)
+
+    # calculate displacement in unit cells
+    l₁ = lattice.lvec
+    l₂ = Δl
+    site_to_loc!(l₁, s₁, unit_cell, lattice)
+    site_to_loc!(l₂, s₂, unit_cell, lattice)
+    @. Δl = l₂ - l₁
+
+    # simplify the displacement
+    simplify!(Δl,lattice)
+
+    return nothing
+end
+
+sites_to_displacement!(; o, Δl, s₁, s₂, unit_cell, lattice) = sites_to_displacement!(o, Δl, s₁, s₂, unit_cell, lattice)
+
+"""
+    function sites_to_displacement(s₁::Int, s₂::Int, unit_cell::UnitCell, lattice::Lattice)
+
+When getting displaced from site `s₁` to `s₂`, return the initial and final orbitals `o`
+and displacement in unit cells `Δl`.
+"""
+function sites_to_displacement(s₁::Int, s₂::Int, unit_cell::UnitCell, lattice::Lattice)
+
+    o  = zeros(Int,2)
+    Δl = zeros(Int,unit_cell.D)
+    sites_to_displacement!(o, Δl, s₁, s₂, unit_cell, lattice)
+
+    return (o, Δl)
+end
+
+sites_to_displacement(; s₁, s₂, unit_cell, lattice) = sites_to_displacement(s₁, s₂, unit_cell, lattice)
+
+
+"""
+    sites_to_bond!(bond::Bond, s₁::Int, s₂::Int, unit_cell::UnitCell, lattice::Lattice)
+
+Calculate the `bond` associated with getting displaced from site `s₁` to `s₂`. 
+"""
+function sites_to_bond!(bond::Bond, s₁::Int, s₂::Int, unit_cell::UnitCell, lattice::Lattice)
+
+    o  = bond.orbitals
+    Δl = bond.displacement
+    sites_to_displacement!(o, Δl, s₁, s₂, unit_cell, lattice)
+
+    return nothing
+end
+
+sites_to_bond!(; bond, s₁, s₂, unit_cell, lattice) = sites_to_bond!(bond, s₁, s₂, unit_cell, lattice)
+
+"""
+    sites_to_bond(s₁::Int, s₂::Int, unit_cell::UnitCell, lattice::Lattice)
+
+Return the `bond` associated with getting displaced from site `s₁` to `s₂`. 
+"""
+function sites_to_bond(s₁::Int, s₂::Int, unit_cell::UnitCell, lattice::Lattice)
+
+    o, Δl = sites_to_displacement(s₁, s₂, unit_cell, lattice)
+
+    return Bond(o, Δl)
+end
+
+sites_to_bond(; s₁, s₂, unit_cell, lattice) = sites_to_bond(s₁, s₂, unit_cell, lattice)
+
+
+"""
     calc_k_point!(k_point::AbstractVector{T}, k_loc::AbstractVector{Int},
         unit_cell::UnitCell{T}, lattice::Lattice) where {T}
 
@@ -336,6 +458,38 @@ function build_neighbor_table(bonds::AbstractVector{Bond}, unit_cell::UnitCell, 
 end
 
 build_neighbor_table(; bonds, unit_cell, lattice) = build_neighbor_table(bonds, unit_cell, lattice)
+
+
+"""
+    map_neighbor_table(neighbor_table::Matrix{Int})
+
+For a given neighbor table, return a dictionary that reports the bonds and neighbors
+associated with each site in the lattice. If `neighbor_table` is modified,
+then a new map must be constructed.
+"""
+function map_neighbor_table(neighbor_table::Matrix{Int})
+
+    @assert size(neighbor_table,1) == 2
+    Nsites = maximum(neighbor_table)
+    Nbonds = size(neighbor_table,2)
+    nt_map = Dict( i => (bonds=Int[], neighbors=Int[]) for i in 1:Nsites)
+    for b in 1:Nbonds
+        i           = neighbor_table[1,b]
+        j           = neighbor_table[2,b]
+        info_i      = nt_map[i]
+        info_j      = nt_map[j]
+        bonds_i     = info_i.bonds
+        neighbors_i = info_i.neighbors
+        bonds_j     = info_j.bonds
+        neighbors_j = info_j.neighbors
+        push!(bonds_i, b)
+        push!(bonds_j, b)
+        push!(neighbors_i, j)
+        push!(neighbors_j, i)
+    end
+
+    return nt_map
+end
 
 
 """

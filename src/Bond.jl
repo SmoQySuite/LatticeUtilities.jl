@@ -48,3 +48,30 @@ function Base.show(io::IO, ::MIME"text/plain", bond::Bond)
     print(io, " • displacement = ", displacement)
     return nothing
 end
+
+
+"""
+    Base.:==(b₁::Bond,b₂::Bond)
+
+Tests if two bonds `b₁` and `b₂` are equivalent.
+"""
+function Base.:(==)(b₁::Bond,b₂::Bond)
+
+    D₁  = b₁.D
+    Δl₁ = b₁.displacement
+    o₁  = b₁.orbitals
+    D₂  = b₂.D
+    Δl₂ = b₂.displacement
+    o₂  = b₂.orbitals
+
+    equal = false
+    if D₁==D₂
+        if Δl₁==Δl₂ && o₁==o₂
+            equal = true
+        elseif all(Δl₁[i]==-Δl₂[i] for i in 1:D₁) && o₁[1]==o₂[2] && o₁[2]==o₂[1]
+            equal = true
+        end
+    end
+
+    return equal
+end
