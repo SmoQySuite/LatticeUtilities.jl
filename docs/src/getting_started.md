@@ -60,7 +60,7 @@ Bond:
  • displacement = [0, 1]
 ```
 
-Using these two bond defintions, we can construct the corresponding neighbor table
+Using these two bond definitions, we can construct the corresponding neighbor table
 using the [`build_neighbor_table`](@ref) method:
 
 ```jldoctest getting_started

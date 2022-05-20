@@ -74,7 +74,7 @@ julia> loc_to_pos([n₁,n₂],α,kagome)
 
 Displacement vectors of the form
 ``\mathbf{r} = n_1 \mathbf{a}_1 + n_2 \mathbf{a}_2 + (\mathbf{r}_\beta - \mathbf{r}_\alpha)``
-can also be caluculated using the [`displacement_to_vec`](@ref) method:
+can also be calculate using the [`displacement_to_vec`](@ref) method:
 
 ```jldoctest kagome
 julia> n₁,n₂,α,β = 1,1,2,3
@@ -136,7 +136,7 @@ julia> calc_k_points(kagome,lattice)
  4.8368  3.6276  2.4184
 ```
 
-Individual ``\mathbf{k}``-points can be caluclated using the [`calc_k_point`](@ref)
+Individual ``\mathbf{k}``-points can be calculated using the [`calc_k_point`](@ref)
 and [`calc_k_point!`](@ref) methods.
 
 If we concern ourselves with just nearest neighbor bonds,
@@ -470,7 +470,7 @@ Bond:
 
 However, these three bond definitions are not unique.
 For instance, it would be similarly correct to define the nearest neighbor
-relations using these three bond defintions:
+relations using these three bond definitions:
 
 ```jldoctest honeycomb
 julia> bond_1′ = Bond(orbitals = [1,0], displacement = [0,0])
@@ -534,7 +534,7 @@ Bond:
 ```
 
 Lastly, given a pair of sites in a finite lattice, it is very easy
-to determine the bond defintion connecting the two sites using the
+to determine the bond definition connecting the two sites using the
 [`sites_to_bond`](@ref) function:
 
 ```jldoctest honeycomb
