@@ -14,5 +14,5 @@ to be a lightweight utility package, useful for the development of other, more c
 To install [`LatticeUtilities.jl`](https://github.com/cohensbw/LatticeUtilities.jl) run following in the Julia REPL:
 
 ```julia
-] add https://github.com/cohensbw/LatticeUtilities.jl
+] add LatticeUtilities
 ```
