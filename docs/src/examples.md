@@ -449,22 +449,22 @@ If we consider just nearest neighbor relations, three types of bonds
 need to be defined:
 
 ```jldoctest honeycomb
-julia> bond_1 = Bond(orbitals = [0,1], displacement = [0,0])
+julia> bond_1 = Bond(orbitals = [1,2], displacement = [0,0])
 Bond:
  • D = 2
- • orbitals = [0, 1]
+ • orbitals = [1, 2]
  • displacement = [0, 0]
 
-julia> bond_2 = Bond([0,1], [-1,0])
+julia> bond_2 = Bond([1,2], [-1,0])
 Bond:
  • D = 2
- • orbitals = [0, 1]
+ • orbitals = [1, 2]
  • displacement = [-1, 0]
 
-julia> bond_3 = Bond([0,1], [0,-1])
+julia> bond_3 = Bond([1,2], [0,-1])
 Bond:
  • D = 2
- • orbitals = [0, 1]
+ • orbitals = [1, 2]
  • displacement = [0, -1]
 ```
 
@@ -473,22 +473,22 @@ For instance, it would be similarly correct to define the nearest neighbor
 relations using these three bond definitions:
 
 ```jldoctest honeycomb
-julia> bond_1′ = Bond(orbitals = [1,0], displacement = [0,0])
+julia> bond_1′ = Bond(orbitals = [2,1], displacement = [0,0])
 Bond:
  • D = 2
- • orbitals = [1, 0]
+ • orbitals = [2, 1]
  • displacement = [0, 0]
 
-julia> bond_2′ = Bond([1,0], [1,0])
+julia> bond_2′ = Bond([2,1], [1,0])
 Bond:
  • D = 2
- • orbitals = [1, 0]
+ • orbitals = [2, 1]
  • displacement = [1, 0]
 
-julia> bond_3′ = Bond([1,0], [0,1])
+julia> bond_3′ = Bond([2,1], [0,1])
 Bond:
  • D = 2
- • orbitals = [1, 0]
+ • orbitals = [2, 1]
  • displacement = [0, 1]
 ```
 
@@ -518,10 +518,10 @@ the size of a finite lattice and also periodic boundary conditions
 where necessary:
 
 ```jldoctest honeycomb
-julia> bond′ = Bond([0,1],[2,0])
+julia> bond′ = Bond([1,2],[2,0])
 Bond:
  • D = 2
- • orbitals = [0, 1]
+ • orbitals = [1, 2]
  • displacement = [2, 0]
 
 julia> simplify!(bond′,lattice)
@@ -529,7 +529,7 @@ julia> simplify!(bond′,lattice)
 julia> bond′
 Bond:
  • D = 2
- • orbitals = [0, 1]
+ • orbitals = [1, 2]
  • displacement = [-1, 0]
 ```
 

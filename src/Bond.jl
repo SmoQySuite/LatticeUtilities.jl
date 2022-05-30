@@ -25,6 +25,7 @@ Constrcut a [`Bond`](@ref)
 """
 function Bond(orbitals::AbstractVector{Int},displacement::AbstractVector{Int})
 
+    @assert all(i -> i > 0, orbitals)
     D = length(displacement)
     return  Bond(D,orbitals,displacement)
 end
