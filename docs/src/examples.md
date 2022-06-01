@@ -146,37 +146,37 @@ we need to define six instances of [`Bond`](@ref) type:
 julia> bond_1 = Bond(orbitals = [1,2], displacement = [0,0])
 Bond:
  • D = 2
- • orbitals = [1, 2]
+ • orbitals = (1, 2)
  • displacement = [0, 0]
 
 julia> bond_2 = Bond([1,3], [0,0])
 Bond:
  • D = 2
- • orbitals = [1, 3]
+ • orbitals = (1, 3)
  • displacement = [0, 0]
 
 julia> bond_3 = Bond([2,3], [0,0])
 Bond:
  • D = 2
- • orbitals = [2, 3]
+ • orbitals = (2, 3)
  • displacement = [0, 0]
 
 julia> bond_4 = Bond([2,1], [1,0])
 Bond:
  • D = 2
- • orbitals = [2, 1]
+ • orbitals = (2, 1)
  • displacement = [1, 0]
 
 julia> bond_5 = Bond([3,1], [0,1])
 Bond:
  • D = 2
- • orbitals = [3, 1]
+ • orbitals = (3, 1)
  • displacement = [0, 1]
 
 julia> bond_6 = Bond([3,2], [-1,1])
 Bond:
  • D = 2
- • orbitals = [3, 2]
+ • orbitals = (3, 2)
  • displacement = [-1, 1]
 ```
 
@@ -334,19 +334,19 @@ are computed. Considering just nearest neighbors, we have three bonds to define:
 julia> bond_x = Bond(orbitals = [1,1], displacement = [1,0,0])
 Bond:
  • D = 3
- • orbitals = [1, 1]
+ • orbitals = (1, 1)
  • displacement = [1, 0, 0]
 
 julia> bond_y = Bond([1,1], [0,1,0])
 Bond:
  • D = 3
- • orbitals = [1, 1]
+ • orbitals = (1, 1)
  • displacement = [0, 1, 0]
 
 julia> bond_z = Bond([1,1], [0,0,1])
 Bond:
  • D = 3
- • orbitals = [1, 1]
+ • orbitals = (1, 1)
  • displacement = [0, 0, 1]
 ```
 
@@ -452,19 +452,19 @@ need to be defined:
 julia> bond_1 = Bond(orbitals = [1,2], displacement = [0,0])
 Bond:
  • D = 2
- • orbitals = [1, 2]
+ • orbitals = (1, 2)
  • displacement = [0, 0]
 
 julia> bond_2 = Bond([1,2], [-1,0])
 Bond:
  • D = 2
- • orbitals = [1, 2]
+ • orbitals = (1, 2)
  • displacement = [-1, 0]
 
 julia> bond_3 = Bond([1,2], [0,-1])
 Bond:
  • D = 2
- • orbitals = [1, 2]
+ • orbitals = (1, 2)
  • displacement = [0, -1]
 ```
 
@@ -476,19 +476,19 @@ relations using these three bond definitions:
 julia> bond_1′ = Bond(orbitals = [2,1], displacement = [0,0])
 Bond:
  • D = 2
- • orbitals = [2, 1]
+ • orbitals = (2, 1)
  • displacement = [0, 0]
 
 julia> bond_2′ = Bond([2,1], [1,0])
 Bond:
  • D = 2
- • orbitals = [2, 1]
+ • orbitals = (2, 1)
  • displacement = [1, 0]
 
 julia> bond_3′ = Bond([2,1], [0,1])
 Bond:
  • D = 2
- • orbitals = [2, 1]
+ • orbitals = (2, 1)
  • displacement = [0, 1]
 ```
 
@@ -521,7 +521,7 @@ where necessary:
 julia> bond′ = Bond([1,2],[2,0])
 Bond:
  • D = 2
- • orbitals = [1, 2]
+ • orbitals = (1, 2)
  • displacement = [2, 0]
 
 julia> simplify!(bond′,lattice)
@@ -529,7 +529,7 @@ julia> simplify!(bond′,lattice)
 julia> bond′
 Bond:
  • D = 2
- • orbitals = [1, 2]
+ • orbitals = (1, 2)
  • displacement = [-1, 0]
 ```
 
@@ -541,12 +541,12 @@ to determine the bond definition connecting the two sites using the
 julia> bond_1_2 = sites_to_bond(1, 2, honeycomb, lattice)
 Bond:
  • D = 2
- • orbitals = [1, 2]
+ • orbitals = (1, 2)
  • displacement = [0, 0]
 
 julia> bond_1_3 = sites_to_bond(1, 3, honeycomb, lattice)
 Bond:
  • D = 2
- • orbitals = [1, 1]
+ • orbitals = (1, 1)
  • displacement = [1, 0]
 ```

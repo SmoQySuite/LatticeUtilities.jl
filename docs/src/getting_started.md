@@ -50,13 +50,13 @@ Considering just nearest neighbors, there are two bonds that need to be defined:
 julia> bond_x = Bond(orbitals = [1,1], displacement = [1,0])
 Bond:
  • D = 2
- • orbitals = [1, 1]
+ • orbitals = (1, 1)
  • displacement = [1, 0]
 
 julia> bond_y = Bond([1,1], [0,1])
 Bond:
  • D = 2
- • orbitals = [1, 1]
+ • orbitals = (1, 1)
  • displacement = [0, 1]
 ```
 

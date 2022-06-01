@@ -12,10 +12,22 @@ struct Bond
     D::Int
 
     "Initial and final orbital species respectively."
-    orbitals::Vector{Int}
+    orbitals::Tuple{Int,Int}
 
     "Displacement in unit cells."
     displacement::Vector{Int}
+end
+
+"""
+    Bond(orbitals::Tuple{Int,Int}, displacement::AbstractVector{Int})
+
+Constrcut a [`Bond`](@ref)
+"""
+function Bond(orbitals::Tuple{Int,Int}, displacement::AbstractVector{Int})
+
+    @assert all(i -> i > 0, orbitals)
+    D = length(displacement)
+    return  Bond(D, orbitals, displacement)
 end
 
 """
@@ -23,11 +35,10 @@ end
 
 Constrcut a [`Bond`](@ref)
 """
-function Bond(orbitals::AbstractVector{Int},displacement::AbstractVector{Int})
+function Bond(orbitals::AbstractVector{Int}, displacement::AbstractVector{Int})
 
-    @assert all(i -> i > 0, orbitals)
-    D = length(displacement)
-    return  Bond(D,orbitals,displacement)
+    @assert length(orbitals) == 2
+    return  Bond(Tuple(i for i in orbitals), displacement)
 end
 
 Bond(; orbitals, displacement) = Bond(orbitals,displacement)
