@@ -50,7 +50,7 @@ Bond(; orbitals, displacement) = Bond(orbitals,displacement)
 
 Show lattice.
 """
-Base.show(io::IO, bond::Bond) = print(io,"Bond(", (bond.D),", ",bond.o,", ",bond.Δl)
+Base.show(io::IO, bond::Bond) = print(io, "Bond(D=$(bond.D), orbitals=$(bond.orbitals), displacement=$(bond.displacement))")
 function Base.show(io::IO, ::MIME"text/plain", bond::Bond)
 
     (; D, orbitals, displacement) = bond

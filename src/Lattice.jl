@@ -54,8 +54,7 @@ Lattice(; L, periodic) = Lattice(L,periodic)
 
 Show lattice.
 """
-Base.show(io::IO, lattice::Lattice) = print(io,"Lattice(D=$(lattice.D), N=$(lattice.N), ",
-                                            lattice.L, ", ", lattice.periodic)
+Base.show(io::IO, lattice::Lattice) = print(io,"Lattice(D=$(lattice.D), N=$(lattice.N), L=$(lattice.L), periodic=$(lattice.periodic))")
 function Base.show(io::IO, ::MIME"text/plain", lattice::Lattice)
 
     (; D, N, L, periodic) = lattice
