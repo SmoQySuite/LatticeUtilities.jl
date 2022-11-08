@@ -78,7 +78,7 @@ function valid_loc(l::AbstractVector{Int}, lattice::Lattice)
 
     isvalid = true
     # check if location valid in each direction
-    for d in 1:D
+    @fastmath @inbounds for d in eachindex(l)
         if !(0<=l[d]<L[d])
             isvalid = false
             break
@@ -100,7 +100,7 @@ function pbc!(l::AbstractVector{Int}, lattice::Lattice)
 
     (; D, N, L, periodic) = lattice
     @assert length(l) == D
-    for d in 1:D
+    @fastmath @inbounds for d in eachindex(l)
         # check if given direction in lattice is periodic
         if periodic[d]
             # make sure each value is positive
@@ -127,7 +127,7 @@ function unitcell_to_loc!(l::AbstractVector{Int}, u::Int, lattice::Lattice)
     (; D, N, L) = lattice
     @assert length(l) == D
 
-    for d in D:-1:1
+    @fastmath @inbounds for d in D:-1:1
         N    = N ÷ L[d]
         l[d] = (u-1) ÷ N
         u    = mod1(u,N)
@@ -161,11 +161,9 @@ Return the unit cell found at location `l` in the lattice.
 function loc_to_unitcell(l::AbstractVector{Int}, lattice::Lattice)
 
     (; D, N, L) = lattice
-    @assert length(l) == D
-    @assert valid_loc(l, lattice)
 
     u = 1
-    for d in D:-1:1
+    @fastmath @inbounds for d in D:-1:1
         N = N ÷ L[d]
         u = u + N * l[d]
     end

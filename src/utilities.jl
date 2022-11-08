@@ -80,7 +80,7 @@ function site_to_loc(s::Int, unit_cell::UnitCell, lattice::Lattice)
 
     @assert unit_cell.D == lattice.D
     l = zeros(Int,unit_cell.D)
-    o   = site_to_loc!(l,s,unit_cell,lattice)
+    o = site_to_loc!(l,s,unit_cell,lattice)
     return (l, o)
 end
 
@@ -95,9 +95,6 @@ site `s` in the lattice. If the location is not valid owing to open boundary con
 then return `s = 0`.
 """
 function loc_to_site(l::AbstractVector{Int}, o::Int, unit_cell::UnitCell, lattice::Lattice)
-
-    @assert unit_cell.D == lattice.D
-    @assert 0 < o <= unit_cell.n
     
     if valid_loc(l,lattice)
         u = loc_to_unitcell(l,lattice)
@@ -119,10 +116,7 @@ Given a unit cell index `u` and orbital `o`, return the correspond site `s`.
 function loc_to_site(u::Int, o::Int, unit_cell::UnitCell, lattice::Lattice)
 
     (; D, N) = lattice
-    (; n)    = unit_cell
-
-    @assert 0 < o <= n "0 < $o <= $n"
-    @assert 0 < u <= N "0 < $u <= $N"
+    (; n) = unit_cell
 
     s = n * (u-1) + o
 
@@ -177,7 +171,7 @@ function simplify!(Δl::AbstractVector{Int}, lattice::Lattice)
 
     # simplify to shortest displacement accounting
     # for periodic boundary conditions
-    for d in 1:D
+    @fastmath @inbounds for d in eachindex(Δl)
         if periodic[d] && abs(Δl[d]) > (L[d]÷2)
             Δl[d] -= sign(Δl[d]) * L[d]
         end
@@ -301,7 +295,7 @@ function calc_k_point!(k_point::AbstractVector{T}, k_loc::AbstractVector{Int}, u
     (; D, L, periodic) = lattice
 
     fill!(k_point,0.0)
-    for d in 1:D
+    @fastmath @inbounds for d in eachindex(k_point)
         l = max( L[d]*periodic[d] , 1 )
         @assert 0 <= k_loc[d] < l "0 <= $(k_loc[d]) < $l"
         @views @. k_point += k_loc[d] * reciprocal_vecs[:,d] / l
@@ -321,7 +315,7 @@ Return the k-point `k_point` corresponding to the k-point location `k_loc`.
 function calc_k_point(k_loc::AbstractVector{Int}, unit_cell::UnitCell{T}, lattice::Lattice) where {T}
     
     k_point = zeros(T,lattice.D)
-    calc_k_point!(k_point,k_loc,unit_cell)
+    calc_k_point!(k_point, k_loc, unit_cell, lattice)
 
     return k_point
 end
@@ -397,7 +391,7 @@ Return the displacement vector associated with a `bond`.
 function bond_to_vec(bond::Bond, unit_cell::UnitCell{T}) where {T}
 
     Δr = zeros(T,bond.D)
-    bond_to_vec!(bond,unit_cell)
+    bond_to_vec!(Δr, bond, unit_cell)
     return Δr
 end
 
@@ -449,7 +443,7 @@ Construct the neighbor table corresponding to `bonds`.
 function build_neighbor_table(bonds::AbstractVector{Bond}, unit_cell::UnitCell, lattice::Lattice)
 
     neighbor_tables = Matrix{Int}[]
-    for i in 1:length(bonds)
+    for i in eachindex(bonds)
         neighbor_table = build_neighbor_table(bonds[i], unit_cell, lattice)
         push!(neighbor_tables, neighbor_table)
     end

@@ -179,7 +179,7 @@ function displacement_to_vec!(Δr::AbstractVector{T}, Δl::AbstractVector{Int}, 
     @assert 1 <= o₂ <= n
 
     fill!(Δr,0.0)
-    for d in 1:D
+    @fastmath @inbounds for d in eachindex(Δr)
         @views @. Δr += Δl[d] * lattice_vecs[:,d]
     end
     @views @. Δr += basis_vecs[:,o₂] - basis_vecs[:,o₁]
