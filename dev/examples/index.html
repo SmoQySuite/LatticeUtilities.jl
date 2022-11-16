@@ -255,10 +255,10 @@ julia&gt; bond_3 = Bond([1,2], [0,-1])
 Bond:
  • D = 2
  • orbitals = (1, 2)
- • displacement = [0, -1]</code></pre><p>However, these three bond definitions are not unique. For instance, it would be similarly correct to define the nearest neighbor relations using these three bond definitions:</p><pre><code class="language-julia-repl hljs">julia&gt; bond_1′ = Bond(orbitals = [2,1], displacement = [0,0])
+ • displacement = [0, -1]</code></pre><p>We could just as well define the bonds in this way.</p><pre><code class="language-julia-repl hljs">julia&gt; bond_1′ = Bond(orbitals = [1,2], displacement = [0,0])
 Bond:
  • D = 2
- • orbitals = (2, 1)
+ • orbitals = (1, 2)
  • displacement = [0, 0]
 
 julia&gt; bond_2′ = Bond([2,1], [1,0])
@@ -271,14 +271,14 @@ julia&gt; bond_3′ = Bond([2,1], [0,1])
 Bond:
  • D = 2
  • orbitals = (2, 1)
- • displacement = [0, 1]</code></pre><p>While the explicit definitions are different here, we can test for equivalencies.</p><pre><code class="language-julia-repl hljs">julia&gt; bond_1 == bond_1′
+ • displacement = [0, 1]</code></pre><p>We can do equivalency tests between bonds, but not that directionality matters when you perform these tests.</p><pre><code class="language-julia-repl hljs">julia&gt; bond_1 == bond_1′
 true
 
 julia&gt; bond_2 == bond_2′
-true
+false
 
 julia&gt; bond_3 == bond_3′
-true
+false
 
 julia&gt; bond_1 == bond_2′
 false</code></pre><p>Note that while not explicitly enforced, for comparison operations like this to be valid each bond definition need to be defined assuming shared lattice vector definitions, which themselves are not unique.</p><p>Note that is also possible to <a href="../api/#LatticeUtilities.simplify!-Tuple{AbstractVector{Int64}, Lattice}"><code>simplify!</code></a> a bond, accounting for the size of a finite lattice and also periodic boundary conditions where necessary:</p><pre><code class="language-julia-repl hljs">julia&gt; bond′ = Bond([1,2],[2,0])
@@ -303,4 +303,4 @@ julia&gt; bond_1_3 = sites_to_bond(1, 3, honeycomb, lattice)
 Bond:
  • D = 2
  • orbitals = (1, 1)
- • displacement = [1, 0]</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../getting_started/">« Getting Started</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Wednesday 16 November 2022 13:36">Wednesday 16 November 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ • displacement = [1, 0]</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../getting_started/">« Getting Started</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Wednesday 16 November 2022 14:15">Wednesday 16 November 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
