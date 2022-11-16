@@ -468,15 +468,13 @@ Bond:
  • displacement = [0, -1]
 ```
 
-However, these three bond definitions are not unique.
-For instance, it would be similarly correct to define the nearest neighbor
-relations using these three bond definitions:
+We could just as well define the bonds in this way.
 
 ```jldoctest honeycomb
-julia> bond_1′ = Bond(orbitals = [2,1], displacement = [0,0])
+julia> bond_1′ = Bond(orbitals = [1,2], displacement = [0,0])
 Bond:
  • D = 2
- • orbitals = (2, 1)
+ • orbitals = (1, 2)
  • displacement = [0, 0]
 
 julia> bond_2′ = Bond([2,1], [1,0])
@@ -492,18 +490,18 @@ Bond:
  • displacement = [0, 1]
 ```
 
-While the explicit definitions are different here, we can test for
-equivalencies.
+We can do equivalency tests between bonds, but not that directionality
+matters when you perform these tests.
 
 ```jldoctest honeycomb
 julia> bond_1 == bond_1′
 true
 
 julia> bond_2 == bond_2′
-true
+false
 
 julia> bond_3 == bond_3′
-true
+false
 
 julia> bond_1 == bond_2′
 false
