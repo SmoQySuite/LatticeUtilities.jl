@@ -1,7 +1,6 @@
 module LatticeUtilities
 
 using LinearAlgebra
-using DocStringExtensions
 using Printf
 
 include("UnitCell.jl")
@@ -18,6 +17,7 @@ include("Bond.jl")
 export Bond
 
 include("utilities.jl")
+export norbits, nsites
 export get_num_sites, valid_site
 export site_to_unitcell, site_to_orbital
 export site_to_loc!, site_to_loc

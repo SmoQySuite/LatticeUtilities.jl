@@ -1,59 +1,54 @@
-"""
-    UnitCell{T<:AbstractFloat}
+@doc raw"""
+    UnitCell{D,n,T<:AbstractFloat,N}
 
-A type defining a unit cell.
+A type defining a unit cell in `D` spatial dimensions.
 
 # Fields
-$(TYPEDFIELDS)
-"""
-struct UnitCell{T<:AbstractFloat}
-    
-    "Number of spatial dimensions."
-    D::Int
 
-    "Orbitals per unit cell."
+- `n::Int`: Number of orbitals in the unit cell.
+- `lattice_vecs::SMatrix{D,D,T,N}`: Matrix where columns give the lattice vectors.
+- `reciprocal_vecs::SMatrix{D,D,T,N}`: Matrix where columns give the reciprocal lattice vectors.
+- `basis_vecs::Vector{SVector{D,T}}`: Vector of basis vectors specifying the location of each orbital in unit cell.
+"""
+struct UnitCell{D,T<:AbstractFloat,N}
+    
+    # number of orbitals per unit cell
     n::Int
 
-    "Matrix where the columns are the lattice vectors."
-    lattice_vecs::Matrix{T}
+    # columns of matrix are lattice vectors
+    lattice_vecs::SMatrix{D,D,T,N}
 
-    "Matrix where the columns are the reciprocal lattice vectors."
-    reciprocal_vecs::Matrix{T}
+    # columns of matrix are reciprocal lattice vectors
+    reciprocal_vecs::SMatrix{D,D,T,N}
 
-    "Matrix where the columns are then basis vectors."
-    basis_vecs::Matrix{T}
+    # list (vector) of basis vectors
+    basis_vecs::Vector{SVector{D,T}}
 end
 
+
+@doc raw"""
+    UnitCell(lattice_vecs::AbstractMatrix{T}, basis_vecs::AbstractMatrix{T}) where {T<:AbstractFloat}
+
+    UnitCell(lattice_vecs::AbstractVector{Vector{T}}, basis_vecs::AbstractVector{Vector{T}}) where {T<:AbstractFloat}
+
+    UnitCell(; lattice_vecs, basis_vecs)
+
+Returns an instance of the type [`UnitCell`](@ref).
 """
-    UnitCell(lattice_vecs::Matrix{T}, basis_vecs::Matrix{T}) where {T<:AbstractFloat}
+function UnitCell(lattice_vecs::AbstractMatrix{T}, basis_vecs::AbstractMatrix{T}) where {T<:AbstractFloat}
 
-Constrcuts a [`UnitCell`](@ref).
-"""
-function UnitCell(lattice_vecs::Matrix{T}, basis_vecs::Matrix{T}) where {T<:AbstractFloat}
-
-    @assert 1 <= size(lattice_vecs,1) <= 3
-    @assert size(basis_vecs,2) >= 1
-    @assert size(lattice_vecs,1)==size(basis_vecs,1)
-    @assert size(lattice_vecs,1)==size(lattice_vecs,2)
-
-    # dimension of unit cell
-    D = size(lattice_vecs,1)
-
-    # number of orbitals in unit cell
-    n = size(basis_vecs,2)
-
-    # calculating reciprocal lattice vectors corresponding to lattice vectors
+    D = size(lattice_vecs, 1)
+    n = size(basis_vecs, 2)
     reciprocal_vecs = 2π * inv(lattice_vecs)'
 
-    return UnitCell{T}(D, n, lattice_vecs, reciprocal_vecs, basis_vecs)
+    static_basis_vecs = SVector{D,T}[]
+    for i in 1:n
+        push!(static_basis_vecs, SVector{D}(@view basis_vecs[:,i]))
+    end
+
+    return UnitCell(n, SMatrix{D,D}(lattice_vecs), SMatrix{D,D}(reciprocal_vecs), static_basis_vecs)
 end
 
-"""
-    UnitCell(lattice_vecs::AbstractVector{Vector{T}}, basis_vecs::AbstractVector{Vector{T}})
-        where {T<:AbstractFloat}
-
-Constrcuts a [`UnitCell`](@ref).
-"""
 function UnitCell(lattice_vecs::AbstractVector{Vector{T}}, basis_vecs::AbstractVector{Vector{T}}) where {T<:AbstractFloat}
 
     return UnitCell(hcat(lattice_vecs...), hcat(basis_vecs...))
@@ -63,44 +58,52 @@ UnitCell(; lattice_vecs, basis_vecs) = UnitCell(lattice_vecs, basis_vecs)
 
 
 """
-    Base.show(io::IO, uc::UnitCell{T}) where {T}
-    Base.show(io::IO, ::MIME"text/plain", uc::UnitCell{T}) where {T}
+    Base.show(io::IO, uc::UnitCell{D,T}) where {D,T}
+    
+    Base.show(io::IO, ::MIME"text/plain", uc::UnitCell{D,T}) where {D,T}
 
 Show unit cell.
 """
-Base.show(io::IO, uc::UnitCell{T}) where {T} = print(io,"UnitCell{$T}(D=$(uc.D), n=$(uc.n))")
-function Base.show(io::IO, ::MIME"text/plain", uc::UnitCell{T}) where {T}
+Base.show(io::IO, uc::UnitCell{D,T}) where {D,T} = print(io,"UnitCell{$D,$T}(n=$(uc.n))")
+function Base.show(io::IO, ::MIME"text/plain", uc::UnitCell{D,T}) where {D,T}
 
-    (; D, n, lattice_vecs, reciprocal_vecs, basis_vecs) = uc
-    print(io, "UnitCell{$T}:\n")
-    print(io," • D = $D\n")
-    print(io," • n = $n\n")
-    print(io," • lattice_vecs =\n")
-    show(io,"text/plain",lattice_vecs)
-    print(io,"\n")
-    print(io," • reciprocal_vecs =\n")
-    show(io,"text/plain",reciprocal_vecs)
-    print(io,"\n")
-    print(io," • basis_vecs =\n")
-    show(io,"text/plain",basis_vecs)
+    (; n, lattice_vecs, reciprocal_vecs, basis_vecs) = uc
+    @printf io "[UnitCell]\n\n"
+    @printf io "dimensions = %\d" D
+    @printf io "orbitals = %d\n\n" n
+    @printf io "[UnitCell.lattice_vecs]\n\n"
+    for d in axes(lattice_vecs,2)
+        a = @view lattice_vecs[:,d]
+        @printf io "a_%d = %s\n" d string(a)
+    end
+    @printf io "\n"
+    @printf io "[UnitCell.reciprocal_vecs]\n\n"
+    for d in axes(reciprocal_vecs,2)
+        a = @view reciprocal_vecs[:,d]
+        @printf io "b_%d = %s\n" d string(a)
+    end
+    @printf io "\n"
+    @printf io "[UnitCell.basis_vecs]\n\n"
+    for d in eachindex(basis_vecs)
+        @printf io "b_%d = %s\n" d string(basis_vecs[d])
+    end
     return nothing
 end
 
 
 """
-    loc_to_pos!(r::AbstractVector{T}, l::AbstractVector{Int},
-        unit_cell::UnitCell{T}) where {T}
+    loc_to_pos!(r::AbstractVector{T}, l, unit_cell::UnitCell{D,T}) where {D,T}
 
 Calculate the position `r` of a unit cell at location `l`.
 """
-function loc_to_pos!(r::AbstractVector{T}, l::AbstractVector{Int}, unit_cell::UnitCell{T}) where {T}
+function loc_to_pos!(r::AbstractVector{T}, l, unit_cell::UnitCell{D,T}) where {D,T}
 
-    (; D, lattice_vecs) = unit_cell
-    @assert length(r) == length(l) == D
+    (; lattice_vecs) = unit_cell
 
     fill!(r,0.0)
-    for d in 1:D
-        @views @. r += l[d] * lattice_vecs[:,d]
+    @fastmath @inbounds for d in eachindex(r)
+        a_d = @view lattice_vecs[:,d]
+        @. r += l[d] * a_d
     end
 
     return nothing
@@ -109,15 +112,15 @@ end
 loc_to_pos!(; r, l, unit_cell) = loc_to_pos!(r, l, unit_cell)
 
 """
-    loc_to_pos!(r::AbstractVector{T}, l::AbstractVector{Int}, s::Int,
-        unit_cell::UnitCell{T}) where {T}
+    loc_to_pos!(r::AbstractVector{T}, l, o::Int, unit_cell::UnitCell{D,T}) where {D,T}
 
-Calculate the position `r` of a orbital `o` at location `l`.
+Calculate the position `r` of an orbital `o` at location `l`.
 """
-function loc_to_pos!(r::AbstractVector{T}, l::AbstractVector{Int}, o::Int, unit_cell::UnitCell{T}) where {T}
+function loc_to_pos!(r::AbstractVector{T}, l, o::Int, unit_cell::UnitCell{D,T}) where {D,T}
 
-    loc_to_pos!(r,l,unit_cell)
-    @views @. r += unit_cell.basis_vecs[:,o]
+    (; basis_vecs) = unit_cell
+    loc_to_pos!(r, l, unit_cell)
+    @. r += basis_vecs[o]
 
     return nothing
 end
@@ -125,15 +128,14 @@ end
 loc_to_pos!(; r, l, o, unit_cell) = loc_to_pos!(r, l, o, unit_cell)
 
 """
-    loc_to_pos(l::AbstractVector{Int}, unit_cell::UnitCell{T})
-        where {T}
+    loc_to_pos(l, unit_cell::UnitCell{T}) where {T}
 
 Return the position `r` of a unit cell at location `l`.
 """
-function loc_to_pos(l::AbstractVector{Int}, unit_cell::UnitCell{T}) where {T}
+function loc_to_pos(l, unit_cell::UnitCell{D,T}) where {D,T}
 
-    r = zeros(T,unit_cell.D)
-    loc_to_pos!(r,l,unit_cell)
+    r = zeros(T,D)
+    loc_to_pos!(r, l, unit_cell)
 
     return r
 end
@@ -141,48 +143,44 @@ end
 loc_to_pos(; l, unit_cell) = loc_to_pos(l, unit_cell)
 
 """
-    loc_to_pos(l::AbstractVector{Int}, s::Int, unit_cell::UnitCell{T})
-        where {T}
+    loc_to_pos(l, s::Int, unit_cell::UnitCell{D,T}) where {D,T}
 
-Return the position `r` of a orbital `o` at location `l`.
+Return the position `r` of a orbital `o` at location `l` as a vector or type `SVector{D,T}`.
 """
-function loc_to_pos(l::AbstractVector{Int}, o::Int, unit_cell::UnitCell{T}) where {T}
+function loc_to_pos(l, o::Int, unit_cell::UnitCell{D,T})::SVector{D,T} where {D,T}
 
-    r = zeros(T,unit_cell.D)
+    r = zeros(T,D)
     loc_to_pos!(r,l,o,unit_cell)
 
-    return r
+    return SVector{D,T}(r)
 end
 
 loc_to_pos(; l, o, unit_cell) = loc_to_pos(l, o, unit_cell)
 
 
 """
-    displacement_to_vec!(Δr::AbstractVector{T}, Δl::AbstractVector{Int},
-        o₁::Int, o₂::Int, unit_cell::UnitCell{T}) where {T}
+    displacement_to_vec!(Δr::AbstractVector{T}, Δl, o_init::Int, o_final::Int, unit_cell::UnitCell{D,T}) where {D,T}
 
 Computes the position space displacement vector `Δr` corresponding to a displacement definition given by initial and final
 orbitals `o₁` and `o₂` in the unit cell respectively, along with a displacement in unit cells `Δl`.
 
 # Arguments
 - `Δr::AbstractVector{T}`: displacement vector in position space.
-- `Δl::AbstractVector{Int}`: displacement in unit cells.
-- `o₁::Int`: initial orbital in unit cell.
-- `o₂::Int`: final orbital in unit cell.
-- `unit_cell::UnitCell{T}`: unit cell.
+- `Δl`: displacement in unit cells.
+- `o_init::Int`: initial orbital in unit cell.
+- `o_final::Int`: final orbital in unit cell.
+- `unit_cell::UnitCell{D,T}`: unit cell.
 """
-function displacement_to_vec!(Δr::AbstractVector{T}, Δl::AbstractVector{Int}, o₁::Int, o₂::Int, unit_cell::UnitCell{T}) where {T}
-    
-    (; D, n, lattice_vecs, basis_vecs) = unit_cell
-    @assert length(Δr) == length(Δl) == D
-    @assert 1 <= o₁ <= n
-    @assert 1 <= o₂ <= n
+function displacement_to_vec!(Δr::AbstractVector{T}, Δl, o_init::Int, o_final::Int, unit_cell::UnitCell{D,T}) where {D,T}
+
+    (; lattice_vecs, basis_vecs) = unit_cell
 
     fill!(Δr,0.0)
     @fastmath @inbounds for d in eachindex(Δr)
-        @views @. Δr += Δl[d] * lattice_vecs[:,d]
+        a_d = @view lattice_vecs[:,d]
+        @. Δr += Δl[d] * a_d
     end
-    @views @. Δr += basis_vecs[:,o₂] - basis_vecs[:,o₁]
+    @. Δr += basis_vecs[o_final] - basis_vecs[o_init]
 
     return nothing
 end
@@ -190,18 +188,17 @@ end
 displacement_to_vec!(; Δr, Δl, o₁, o₂, unit_cell) = displacement_to_vec!(Δr, Δl, o₁, o₂, unit_cell)
 
 """
-    displacement_to_vec(Δl::AbstractVector{Int}, o₁::Int, o₂::Int,
-        unit_cell::UnitCell{T}) where {T}
+    displacement_to_vec(Δl, o_init::Int, o_final::Int, unit_cell::UnitCell{D,T})::SVector{D,T} where {D,T}
 
 Returns the position space displacement vector `Δr` corresponding to a displacement definition given by initial and final
-orbitals `o₁` and `o₂` in the unit cell respectively, along with a displacement in unit cells `Δl`.
+orbitals `o_init` and `o_final` in the unit cell respectively, along with a displacement in unit cells `Δl`.
 """
-function displacement_to_vec(Δl::AbstractVector{Int}, o₁::Int, o₂::Int, unit_cell::UnitCell{T}) where {T}
+function displacement_to_vec(Δl, o_init::Int, o_final::Int, unit_cell::UnitCell{D,T})::SVector{D,T} where {D,T}
     
     Δr = zeros(T,unit_cell.D)
-    displacement_to_vec!(Δr, Δl, o₁, o₂, unit_cell)
+    displacement_to_vec!(Δr, Δl, o_init, o_final, unit_cell)
 
-    return Δr
+    return SVector{D,T}(Δr)
 end
 
-displacement_to_vec(; Δl, o₁, o₂, unit_cell) = displacement_to_vec(Δl, o₁, o₂, unit_cell)
+displacement_to_vec(; Δl, o_init, o_final, unit_cell) = displacement_to_vec(Δl, o_init, o_final, unit_cell)

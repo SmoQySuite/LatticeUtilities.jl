@@ -1,112 +1,78 @@
 """
-    Lattice
+    Lattice{D}
 
-A type defining a finite lattice in arbitary dimensions.
+A type defining a finite lattice in `D` dimensions.
 
 # Fields
-$(TYPEDFIELDS)
+
+- `N::Int`: Number of unit cells in finite lattice.
+- `L::SVector{D,Int}`: Size of finite lattice in the direction of each lattice vector in unit cells.
+- `periodic::SVector{D,Bool}`: Specifies whether each lattice vector direction hosts periodic or open boundary conditions.
+- `lvec::MVector{D,Int}`: Private temporary storage vector to contain intermediate location and displacement vectors.
 """
-struct Lattice
+struct Lattice{D}
 
-    "Number of spatial dimensions."
-    D::Int
-
-    "Number of unit cells."
     N::Int
-
-    "Linear extent of lattice in the direction of each lattice vector."
-    L::Vector{Int}
-
-    "Whether the lattice is periodic in the direction of each lattice vector."
-    periodic::Vector{Bool}
-
-    "Storage space for representing a location or displacement in the lattice."
-    lvec::Vector{Int}
+    L::SVector{D,Int}
+    periodic::SVector{D,Bool}
+    lvec::MVector{D,Int}
 end
 
 """
-    Lattice(L::Vector{Int}, periodic::Vector{Bool})
+    Lattice(L, periodic)
+
+    Lattice(; L, periodic)
 
 Constructs a [`Lattice`](@ref).
 """
-function Lattice(L::Vector{Int},periodic::Vector{Bool})
-
-    @assert 1 <= length(L) <= 3
-    @assert length(L) == length(periodic)
-    @assert all(l -> l > 0, L)
-     
-    # dimension of lattice
-    D = length(L)
-    # number of unit cells in lattice
-    N = prod(L)
-    # location/displacment array
-    lvec = zeros(Int,D)
-
-    return Lattice(D,N,L,periodic,lvec)
-end
-
-Lattice(; L, periodic) = Lattice(L,periodic)
+Lattice(L, periodic) = Lattice(prod(L), SVector{length(L),Int}(L), SVector{length(periodic),Bool}(periodic), MVector{length(L),Int}(zeros(Int,length(L))))
+Lattice(; L, periodic) = Lattice(L ,periodic)
 
 
 """
-    Base.show(io::IO, lattice::Lattice)
-    Base.show(io::IO, ::MIME"text/plain", lattice::Lattice)
+    Base.show(io::IO, lattice::Lattice{D}) where {D}
+    
+    Base.show(io::IO, ::MIME"text/plain", lattice::Lattice{D}) where {D}
 
 Show lattice.
 """
-Base.show(io::IO, lattice::Lattice) = print(io,"Lattice(D=$(lattice.D), N=$(lattice.N), L=$(lattice.L), periodic=$(lattice.periodic))")
-function Base.show(io::IO, ::MIME"text/plain", lattice::Lattice)
+Base.show(io::IO, lattice::Lattice{D}) where {D} = print(io,"Lattice{$(D)}(N=$(lattice.N), L=$(lattice.L), periodic=$(lattice.periodic))")
+function Base.show(io::IO, ::MIME"text/plain", lattice::Lattice{D}) where {D}
 
-    (; D, N, L, periodic) = lattice
-    println(io, "Lattice:")
-    println(io, " • D = $D")
-    println(io, " • N = $N")
-    println(io, " • L = ", L)
-    println(io, " • periodic = ", periodic)
+    (; N, L, periodic) = lattice
+    @printf io "[Lattice]\n\n"
+    @printf io "dimensions   = %d\n" D
+    @printf io "n_unit_cells = %d\n" N
+    @printf io "size         = %s\n" string(L)
+    @printf io "periodic     = [%s]\n" join(periodic, ", ")
     return nothing
 end
 
 
 """
-    valid_location(l::AbstractVector{Int}, lattice::Lattice)
+    valid_loc(l, lattice::Lattice{D})::Bool where {D}
 
 Determine if `l` describes a valid location in the lattice.
 """
-function valid_loc(l::AbstractVector{Int}, lattice::Lattice)
+function valid_loc(l, lattice::Lattice{D})::Bool where {D}
 
-    (; D, N, L) = lattice
-
-    isvalid = true
-    # check if location valid in each direction
-    @fastmath @inbounds for d in eachindex(l)
-        if !(0<=l[d]<L[d])
-            isvalid = false
-            break
-        end
-    end
-
-    return isvalid
+    return all(i -> 0<=l[i]<lattice.L[i], 1:D) && length(l)==D
 end
 
 valid_loc(; l, lattice) = valid_loc(l, lattice)
 
 
 """
-    pbc!(l::AbstractVector{Int}, lattice::Lattice)
+    pbc!(l::AbstractVector{Int}, lattice::Lattice{D}) where {D}
 
 Apply periodic boundary to unit cell location `l`.
 """
-function pbc!(l::AbstractVector{Int}, lattice::Lattice)
+function pbc!(l::AbstractVector{Int}, lattice::Lattice{D}) where {D}
 
-    (; D, N, L, periodic) = lattice
-    @assert length(l) == D
+    (; L, periodic) = lattice
     @fastmath @inbounds for d in eachindex(l)
         # check if given direction in lattice is periodic
         if periodic[d]
-            # make sure each value is positive
-            if l[d] < 0
-                l[d] = l[d] + L[d] * (abs(l[d])÷L[d] + 1)
-            end
             # apply periodic boundary conditions
             l[d] = mod(l[d], L[d])
         end
@@ -118,14 +84,13 @@ pbc!(; l, lattice) = pbc!(l, lattice)
 
 
 """
-    unitcell_to_loc!(l::AbstractVector{Int}, u::Int, lattice::Lattice)
+    unitcell_to_loc!(l::AbstractVector{Int}, u::Int, lattice::Lattice{D}) where {D}
 
 Calculate the location `l` of a unit cell `u`.
 """
-function unitcell_to_loc!(l::AbstractVector{Int}, u::Int, lattice::Lattice)
+function unitcell_to_loc!(l::AbstractVector{Int}, u::Int, lattice::Lattice{D}) where {D}
 
-    (; D, N, L) = lattice
-    @assert length(l) == D
+    (; N, L) = lattice
 
     @fastmath @inbounds for d in D:-1:1
         N    = N ÷ L[d]
@@ -139,28 +104,28 @@ end
 unitcell_to_loc!(; l, u, lattice) = unitcell_to_loc!(l, u, lattice)
 
 """
-    unitcell_to_loc(u::Int, lattice::Lattice)
+    unitcell_to_loc(u::Int, lattice::Lattice{D})::SVector{D,Int} where {D}
 
-Return the location of unit cell `u`.
+Return the location of unit cell `u` as an instance of type `SVector{D,Int}`.
 """
-function unitcell_to_loc(u::Int, lattice::Lattice)
+function unitcell_to_loc(u::Int, lattice::Lattice{D})::SVector{D,Int} where {D}
 
     l = zeros(Int,lattice.D)
     unitcell_to_loc!(l,u,lattice)
-    return l
+    return SVector{D,Int}(l)
 end
 
 unitcell_to_loc(; u, lattice) = unitcell_to_loc(u, lattice)
 
 
 """
-    loca_to_unitcell(l::AbstractVector{Int}, lattice::Lattice)
+    loc_to_unitcell(l, lattice::Lattice{D}) where {D}
 
 Return the unit cell found at location `l` in the lattice.
 """
-function loc_to_unitcell(l::AbstractVector{Int}, lattice::Lattice)
+function loc_to_unitcell(l, lattice::Lattice{D}) where {D}
 
-    (; D, N, L) = lattice
+    (; N, L) = lattice
 
     u = 1
     @fastmath @inbounds for d in D:-1:1
