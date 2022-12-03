@@ -1,7 +1,11 @@
 module LatticeUtilities
 
 using LinearAlgebra
+using StaticArrays
 using Printf
+
+# rexport used static arrays types from the StaticArrays package
+export SMatrix, SVector, MVector
 
 include("UnitCell.jl")
 export UnitCell

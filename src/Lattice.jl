@@ -44,7 +44,7 @@ function Base.show(io::IO, ::MIME"text/plain", lattice::Lattice{D}) where {D}
     @printf io "dimensions   = %d\n" D
     @printf io "n_unit_cells = %d\n" N
     @printf io "size         = %s\n" string(L)
-    @printf io "periodic     = [%s]\n" join(periodic, ", ")
+    @printf io "periodic     = [%s]" join(periodic, ", ")
     return nothing
 end
 

@@ -13,21 +13,24 @@ to represent the unit cell for a square lattice:
 ```jldoctest getting_started
 julia> square = UnitCell(lattice_vecs = [[1.,0.],[0.,1.]],
                          basis_vecs   = [[0.,0.]])
-UnitCell{Float64}:
- • D = 2
- • n = 1
- • lattice_vecs =
-2×2 Matrix{Float64}:
- 1.0  0.0
- 0.0  1.0
- • reciprocal_vecs =
-2×2 Matrix{Float64}:
- 6.28319  0.0
- 0.0      6.28319
- • basis_vecs =
-2×1 Matrix{Float64}:
- 0.0
- 0.0
+[UnitCell]
+
+dimensions = 2
+orbitals = 1
+
+[UnitCell.lattice_vecs]
+
+a_1 = [1.0, 0.0]
+a_2 = [0.0, 1.0]
+
+[UnitCell.reciprocal_vecs]
+
+b_1 = [6.283185307179586, 0.0]
+b_2 = [0.0, 6.283185307179586]
+
+[UnitCell.basis_vecs]
+
+b_1 = [0.0, 0.0]
 ```
 
 Next we construct an instance of the type [`Lattice`](@ref) that describes the size
@@ -36,28 +39,31 @@ periodic boundary conditions in the direction of both lattice vectors:
 
 ```jldoctest getting_started
 julia> lattice = Lattice(L = [4,4], periodic = [true,true])
-Lattice:
- • D = 2
- • N = 16
- • L = [4, 4]
- • periodic = Bool[1, 1]
+[Lattice]
+
+dimensions   = 2
+n_unit_cells = 16
+size         = [4, 4]
+periodic     = [true, true]
 ```
 
 Bonds (or edges) in a lattice are represented by the [`Bond`](@ref) type.
 Considering just nearest neighbors, there are two bonds that need to be defined:
 
 ```jldoctest getting_started
-julia> bond_x = Bond(orbitals = [1,1], displacement = [1,0])
-Bond:
- • D = 2
- • orbitals = (1, 1)
- • displacement = [1, 0]
+julia> bond_x = Bond(orbitals = (1,1), displacement = [1,0])
+[[Bond]]
 
-julia> bond_y = Bond([1,1], [0,1])
-Bond:
- • D = 2
- • orbitals = (1, 1)
- • displacement = [0, 1]
+dimensions   = 2
+orbitals     = (1, 1)
+displacement = [1, 0]
+
+julia> bond_y = Bond((1,1), [0,1])
+[[Bond]]
+
+dimensions   = 2
+orbitals     = (1, 1)
+displacement = [0, 1]
 ```
 
 Using these two bond definitions, we can construct the corresponding neighbor table

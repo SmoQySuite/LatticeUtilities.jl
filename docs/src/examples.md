@@ -40,21 +40,26 @@ the Kagome lattice unit cell:
 ```jldoctest kagome; setup = :(using LatticeUtilities)
 julia> kagome = UnitCell(lattice_vecs = [[1.0,0.0], [1/2,√3/2]],
                          basis_vecs   = [[0.0,0.0], [1/2,0.0], [1/4,√3/4]])
-UnitCell{Float64}:
- • D = 2
- • n = 3
- • lattice_vecs =
-2×2 Matrix{Float64}:
- 1.0  0.5
- 0.0  0.866025
- • reciprocal_vecs =
-2×2 Matrix{Float64}:
-  6.28319  0.0
- -3.6276   7.2552
- • basis_vecs =
-2×3 Matrix{Float64}:
- 0.0  0.5  0.25
- 0.0  0.0  0.433013
+[UnitCell]
+
+dimensions = 2
+orbitals = 3
+
+[UnitCell.lattice_vecs]
+
+a_1 = [1.0, 0.0]
+a_2 = [0.5, 0.8660254037844386]
+
+[UnitCell.reciprocal_vecs]
+
+b_1 = [6.283185307179586, -3.627598728468436]
+b_2 = [0.0, 7.255197456936872]
+
+[UnitCell.basis_vecs]
+
+b_1 = [0.0, 0.0]
+b_2 = [0.5, 0.0]
+b_3 = [0.25, 0.4330127018922193]
 ```
 
 It is straightforward to calculate position space vectors of the form
@@ -63,11 +68,11 @@ using the method [`loc_to_pos`](@ref), where ``\mathbf{r}_\alpha`` is one of the
 three possible basis vectors:
 
 ```jldoctest kagome
-julia> n₁,n₂,α = 1,1,2
+julia> n₁, n₂, α = 1, 1, 2
 (1, 1, 2)
 
-julia> loc_to_pos([n₁,n₂],α,kagome)
-2-element Vector{Float64}:
+julia> loc_to_pos([n₁,n₂], α, kagome)
+2-element SVector{2, Float64} with indices SOneTo(2):
  2.0
  0.8660254037844386
 ```
@@ -77,11 +82,11 @@ Displacement vectors of the form
 can also be calculate using the [`displacement_to_vec`](@ref) method:
 
 ```jldoctest kagome
-julia> n₁,n₂,α,β = 1,1,2,3
+julia> n₁, n₂, α, β = 1, 1, 2, 3
 (1, 1, 2, 3)
 
-julia> displacement_to_vec([n₁,n₂],α,β,kagome)
-2-element Vector{Float64}:
+julia> displacement_to_vec([n₁,n₂], α, β, kagome)
+2-element SVector{2, Float64} with indices SOneTo(2):
  1.25
  1.299038105676658
 ```
@@ -97,18 +102,19 @@ in the direction of both lattice vectors:
 
 ```jldoctest kagome
 julia> lattice = Lattice(L = [3,3], periodic = [true,true])
-Lattice:
- • D = 2
- • N = 9
- • L = [3, 3]
- • periodic = Bool[1, 1]
+[Lattice]
+
+dimensions   = 2
+n_unit_cells = 9
+size         = [3, 3]
+periodic     = [true, true]
 ```
 
 Given an initial site, a displacement in unit cells, and a terminating orbital species,
 we can calculate the final site using the [`site_to_site`](@ref) method:
 
 ```jldoctest kagome
-julia> site_to_site(17, [1,1], 2, kagome, lattice)
+julia> site_to_site(17, (1,1), 2, kagome, lattice)
 20
 ```
 
@@ -121,19 +127,11 @@ where each index runs from ``n_i = 0, 1, \dots, L_i-1``.\
 This set of ``\mathbf{k}``-points can be constructed using the [`calc_k_points`](@ref) method:
 
 ```jldoctest kagome
-julia> calc_k_points(kagome,lattice)
-2×3×3 Array{Float64, 3}:
-[:, :, 1] =
- 0.0   2.0944   4.18879
- 0.0  -1.2092  -2.4184
-
-[:, :, 2] =
- 0.0     2.0944   4.18879
- 2.4184  1.2092  -1.34248e-16
-
-[:, :, 3] =
- 0.0     2.0944  4.18879
- 4.8368  3.6276  2.4184
+julia> calc_k_points(kagome, lattice)
+3×3 Matrix{SVector{2, Float64}}:
+ [0.0, 0.0]          [0.0, 2.4184]            [0.0, 4.8368]
+ [2.0944, -1.2092]   [2.0944, 1.2092]         [2.0944, 3.6276]
+ [4.18879, -2.4184]  [4.18879, -1.34248e-16]  [4.18879, 2.4184]
 ```
 
 Individual ``\mathbf{k}``-points can be calculated using the [`calc_k_point`](@ref)
@@ -143,41 +141,47 @@ If we concern ourselves with just nearest neighbor bonds,
 we need to define six instances of [`Bond`](@ref) type:
 
 ```jldoctest kagome
-julia> bond_1 = Bond(orbitals = [1,2], displacement = [0,0])
-Bond:
- • D = 2
- • orbitals = (1, 2)
- • displacement = [0, 0]
+julia> bond_1 = Bond(orbitals = (1,2), displacement = [0,0])
+[[Bond]]
 
-julia> bond_2 = Bond([1,3], [0,0])
-Bond:
- • D = 2
- • orbitals = (1, 3)
- • displacement = [0, 0]
+dimensions   = 2
+orbitals     = [1, 2]
+displacement = [0, 0]
 
-julia> bond_3 = Bond([2,3], [0,0])
-Bond:
- • D = 2
- • orbitals = (2, 3)
- • displacement = [0, 0]
+julia> bond_2 = Bond((1,3), [0,0])
+[[Bond]]
 
-julia> bond_4 = Bond([2,1], [1,0])
-Bond:
- • D = 2
- • orbitals = (2, 1)
- • displacement = [1, 0]
+dimensions   = 2
+orbitals     = [1, 3]
+displacement = [0, 0]
 
-julia> bond_5 = Bond([3,1], [0,1])
-Bond:
- • D = 2
- • orbitals = (3, 1)
- • displacement = [0, 1]
+julia> bond_3 = Bond((2,3), [0,0])
+[[Bond]]
 
-julia> bond_6 = Bond([3,2], [-1,1])
-Bond:
- • D = 2
- • orbitals = (3, 2)
- • displacement = [-1, 1]
+dimensions   = 2
+orbitals     = [2, 3]
+displacement = [0, 0]
+
+julia> bond_4 = Bond((2,1), [1,0])
+[[Bond]]
+
+dimensions   = 2
+orbitals     = [2, 1]
+displacement = [1, 0]
+
+julia> bond_5 = Bond((3,1), [0,1])
+[[Bond]]
+
+dimensions   = 2
+orbitals     = [3, 1]
+displacement = [0, 1]
+
+julia> bond_6 = Bond((3,2), [-1,1])
+[[Bond]]
+
+dimensions   = 2
+orbitals     = [3, 2]
+displacement = [-1, 1]
 ```
 
 Now we are ready to build the corresponding neighbor table:
@@ -228,24 +232,26 @@ As usual, we begin by defining a [`UnitCell`](@ref):
 ```jldoctest cubic; setup = :(using LatticeUtilities)
 julia> cubic = UnitCell(lattice_vecs = [[1.,0.,0.],[0.,1.,0.],[0.,0.,1.]],
                         basis_vecs   = [[0.,0.,0.]])
-UnitCell{Float64}:
- • D = 3
- • n = 1
- • lattice_vecs =
-3×3 Matrix{Float64}:
- 1.0  0.0  0.0
- 0.0  1.0  0.0
- 0.0  0.0  1.0
- • reciprocal_vecs =
-3×3 Matrix{Float64}:
- 6.28319  0.0      0.0
- 0.0      6.28319  0.0
- 0.0      0.0      6.28319
- • basis_vecs =
-3×1 Matrix{Float64}:
- 0.0
- 0.0
- 0.0
+[UnitCell]
+
+dimensions = 3
+orbitals = 1
+
+[UnitCell.lattice_vecs]
+
+a_1 = [1.0, 0.0, 0.0]
+a_2 = [0.0, 1.0, 0.0]
+a_3 = [0.0, 0.0, 1.0]
+
+[UnitCell.reciprocal_vecs]
+
+b_1 = [6.283185307179586, 0.0, 0.0]
+b_2 = [0.0, 6.283185307179586, 0.0]
+b_3 = [0.0, 0.0, 6.283185307179586]
+
+[UnitCell.basis_vecs]
+
+b_1 = [0.0, 0.0, 0.0]
 ```
 
 Next we define four instances of the type [`Lattice`](@ref).
@@ -254,11 +260,12 @@ of all three lattice vectors:
 
 ```jldoctest cubic
 julia> lattice_ppp = Lattice([4,4,4],[true,true,true])
-Lattice:
- • D = 3
- • N = 64
- • L = [4, 4, 4]
- • periodic = Bool[1, 1, 1]
+[Lattice]
+
+dimensions   = 3
+n_unit_cells = 64
+size         = [4, 4, 4]
+periodic     = [true, true, true]
 ```
 
 The second defines a lattice that is periodic only in the direction of the
@@ -266,11 +273,12 @@ first two lattice vectors, ``\hat{\mathbf{x}}`` and ``\hat{\mathbf{y}}``:
 
 ```jldoctest cubic
 julia> lattice_ppo = Lattice([4,4,4],[true,true,false])
-Lattice:
- • D = 3
- • N = 64
- • L = [4, 4, 4]
- • periodic = Bool[1, 1, 0]
+[Lattice]
+
+dimensions   = 3
+n_unit_cells = 64
+size         = [4, 4, 4]
+periodic     = [true, true, false]
 ```
 
 The third defines a lattice that is periodic only in the direction
@@ -278,22 +286,24 @@ of the first lattice vector, ``\hat{\mathbf{x}}``:
 
 ```jldoctest cubic
 julia> lattice_poo = Lattice([4,4,4],[true,false,false])
-Lattice:
- • D = 3
- • N = 64
- • L = [4, 4, 4]
- • periodic = Bool[1, 0, 0]
+[Lattice]
+
+dimensions   = 3
+n_unit_cells = 64
+size         = [4, 4, 4]
+periodic     = [true, false, false]
 ```
 
 Lastly, we define a lattice with strictly open boundary conditions:
 
 ```jldoctest cubic
 julia> lattice_ooo = Lattice([4,4,4],[false,false,false])
-Lattice:
- • D = 3
- • N = 64
- • L = [4, 4, 4]
- • periodic = Bool[0, 0, 0]
+[Lattice]
+
+dimensions   = 3
+n_unit_cells = 64
+size         = [4, 4, 4]
+periodic     = [false, false, false]
 ```
 
 Note that the set of ``\mathbf{k}``-points generated by the function
@@ -305,23 +315,21 @@ treats ``L_i = 1`` when calculating the relevant set of
 
 ```jldoctest cubic
 julia> size( calc_k_points(cubic,lattice_ppp) )
-(3, 4, 4, 4)
+(4, 4, 4)
 
 julia> size( calc_k_points(cubic,lattice_ppo) )
-(3, 4, 4, 1)
+(4, 4, 1)
 
 julia> size( calc_k_points(cubic,lattice_poo) )
-(3, 4, 1, 1)
+(4, 1, 1)
 
 julia> size( calc_k_points(cubic,lattice_ooo) )
-(3, 1, 1, 1)
+(1, 1, 1)
 
 julia> calc_k_points(cubic,lattice_ooo)
-3×1×1×1 Array{Float64, 4}:
-[:, :, 1, 1] =
- 0.0
- 0.0
- 0.0
+1×1×1 Array{SVector{3, Float64}, 3}:
+[:, :, 1] =
+ [0.0, 0.0, 0.0]
 ```
 
 As you can see, in the case that the lattice only has open boundary
@@ -331,49 +339,48 @@ Next we will consider how the boundary conditions effect how neighbor tables
 are computed. Considering just nearest neighbors, we have three bonds to define:
 
 ```jldoctest cubic
-julia> bond_x = Bond(orbitals = [1,1], displacement = [1,0,0])
-Bond:
- • D = 3
- • orbitals = (1, 1)
- • displacement = [1, 0, 0]
+julia> bond_x = Bond(orbitals = (1,1), displacement = [1,0,0])
+[[Bond]]
 
-julia> bond_y = Bond([1,1], [0,1,0])
-Bond:
- • D = 3
- • orbitals = (1, 1)
- • displacement = [0, 1, 0]
+dimensions   = 3
+orbitals     = [1, 1]
+displacement = [1, 0, 0]
 
-julia> bond_z = Bond([1,1], [0,0,1])
-Bond:
- • D = 3
- • orbitals = (1, 1)
- • displacement = [0, 0, 1]
+julia> bond_y = Bond((1,1), [0,1,0])
+[[Bond]]
+
+dimensions   = 3
+orbitals     = [1, 1]
+displacement = [0, 1, 0]
+
+julia> bond_z = Bond((1,1), [0,0,1])
+[[Bond]]
+
+dimensions   = 3
+orbitals     = [1, 1]
+displacement = [0, 0, 1]
 ```
 
 Base on these three bonds, the neighbor table generated using [`build_neighbor_table`](@ref)
 will depend on the boundary conditions used:
 
 ```jldoctest cubic
-julia> nt_ppp = build_neighbor_table([bond_x,bond_y,bond_z],
-                                      cubic, lattice_ppp)
+julia> nt_ppp = build_neighbor_table([bond_x,bond_y,bond_z], cubic, lattice_ppp)
 2×192 Matrix{Int64}:
  1  2  3  4  5  6  7  8   9  10  11  …  56  57  58  59  60  61  62  63  64
  2  3  4  1  6  7  8  5  10  11  12      8   9  10  11  12  13  14  15  16
 
-julia> nt_ppo = build_neighbor_table([bond_x,bond_y,bond_z],
-                                      cubic, lattice_ppo)
+julia> nt_ppo = build_neighbor_table([bond_x,bond_y,bond_z], cubic, lattice_ppo)
 2×176 Matrix{Int64}:
  1  2  3  4  5  6  7  8   9  10  11  …  40  41  42  43  44  45  46  47  48
  2  3  4  1  6  7  8  5  10  11  12     56  57  58  59  60  61  62  63  64
 
-julia> nt_poo = build_neighbor_table([bond_x,bond_y,bond_z],
-                                      cubic, lattice_poo)
+julia> nt_poo = build_neighbor_table([bond_x,bond_y,bond_z], cubic, lattice_poo)
 2×160 Matrix{Int64}:
  1  2  3  4  5  6  7  8   9  10  11  …  40  41  42  43  44  45  46  47  48
  2  3  4  1  6  7  8  5  10  11  12     56  57  58  59  60  61  62  63  64
 
-julia> nt_ooo = build_neighbor_table([bond_x,bond_y,bond_z],
-                                      cubic, lattice_ooo)
+julia> nt_ooo = build_neighbor_table([bond_x,bond_y,bond_z], cubic, lattice_ooo)
 2×144 Matrix{Int64}:
  1  2  3  5  6  7   9  10  11  13  14  …  40  41  42  43  44  45  46  47  48
  2  3  4  6  7  8  10  11  12  14  15     56  57  58  59  60  61  62  63  64
@@ -416,21 +423,25 @@ to reflect this:
 ```jldoctest honeycomb; setup = :(using LatticeUtilities)
 julia> honeycomb = UnitCell(lattice_vecs = [[3/2,√3/2],[3/2,-√3/2]],
                             basis_vecs   = [[0.,0.],[1.,0.]])
-UnitCell{Float64}:
- • D = 2
- • n = 2
- • lattice_vecs =
-2×2 Matrix{Float64}:
- 1.5        1.5
- 0.866025  -0.866025
- • reciprocal_vecs =
-2×2 Matrix{Float64}:
- 2.0944   2.0944
- 3.6276  -3.6276
- • basis_vecs =
-2×2 Matrix{Float64}:
- 0.0  1.0
- 0.0  0.0
+[UnitCell]
+
+dimensions = 2
+orbitals = 2
+
+[UnitCell.lattice_vecs]
+
+a_1 = [1.5, 0.8660254037844386]
+a_2 = [1.5, -0.8660254037844386]
+
+[UnitCell.reciprocal_vecs]
+
+b_1 = [2.094395102393195, 3.627598728468436]
+b_2 = [2.0943951023931957, -3.627598728468436]
+
+[UnitCell.basis_vecs]
+
+b_1 = [0.0, 0.0]
+b_2 = [1.0, 0.0]
 ```
 
 And again, we define an instance of the type [`Lattice`](@ref) to
@@ -438,59 +449,66 @@ represent a finite lattice:
 
 ```jldoctest honeycomb
 julia> lattice = Lattice([3,3],[true,true])
-Lattice:
- • D = 2
- • N = 9
- • L = [3, 3]
- • periodic = Bool[1, 1]
+[Lattice]
+
+dimensions   = 2
+n_unit_cells = 9
+size         = [3, 3]
+periodic     = [true, true]
 ```
 
 If we consider just nearest neighbor relations, three types of bonds
 need to be defined:
 
 ```jldoctest honeycomb
-julia> bond_1 = Bond(orbitals = [1,2], displacement = [0,0])
-Bond:
- • D = 2
- • orbitals = (1, 2)
- • displacement = [0, 0]
+julia> bond_1 = Bond(orbitals = (1,2), displacement = [0,0])
+[[Bond]]
 
-julia> bond_2 = Bond([1,2], [-1,0])
-Bond:
- • D = 2
- • orbitals = (1, 2)
- • displacement = [-1, 0]
+dimensions   = 2
+orbitals     = [1, 2]
+displacement = [0, 0]
 
-julia> bond_3 = Bond([1,2], [0,-1])
-Bond:
- • D = 2
- • orbitals = (1, 2)
- • displacement = [0, -1]
+julia> bond_2 = Bond((1,2), [-1,0])
+[[Bond]]
+
+dimensions   = 2
+orbitals     = [1, 2]
+displacement = [-1, 0]
+
+julia> bond_3 = Bond((1,2), [0,-1])
+[[Bond]]
+
+dimensions   = 2
+orbitals     = [1, 2]
+displacement = [0, -1]
 ```
 
 We could just as well define the bonds in this way.
 
 ```jldoctest honeycomb
-julia> bond_1′ = Bond(orbitals = [1,2], displacement = [0,0])
-Bond:
- • D = 2
- • orbitals = (1, 2)
- • displacement = [0, 0]
+julia> bond_1′ = Bond(orbitals = (1,2), displacement = [0,0])
+[[Bond]]
 
-julia> bond_2′ = Bond([2,1], [1,0])
-Bond:
- • D = 2
- • orbitals = (2, 1)
- • displacement = [1, 0]
+dimensions   = 2
+orbitals     = [1, 2]
+displacement = [0, 0]
 
-julia> bond_3′ = Bond([2,1], [0,1])
-Bond:
- • D = 2
- • orbitals = (2, 1)
- • displacement = [0, 1]
+julia> bond_2′ = Bond((2,1), [1,0])
+[[Bond]]
+
+dimensions   = 2
+orbitals     = [2, 1]
+displacement = [1, 0]
+
+julia> bond_3′ = Bond((2,1), [0,1])
+[[Bond]]
+
+dimensions   = 2
+orbitals     = [2, 1]
+displacement = [0, 1]
 ```
 
-We can do equivalency tests between bonds, but not that directionality
+We can do equivalency tests between bonds, but note that directionality
 matters when you perform these tests.
 
 ```jldoctest honeycomb
@@ -508,28 +526,8 @@ false
 ```
 
 Note that while not explicitly enforced, for comparison operations like this
-to be valid each bond definition need to be defined assuming shared lattice
+to be valid each bond definition needs to be defined assuming shared lattice
 vector definitions, which themselves are not unique.
-
-Note that is also possible to [`simplify!`](@ref) a bond, accounting for
-the size of a finite lattice and also periodic boundary conditions
-where necessary:
-
-```jldoctest honeycomb
-julia> bond′ = Bond([1,2],[2,0])
-Bond:
- • D = 2
- • orbitals = (1, 2)
- • displacement = [2, 0]
-
-julia> simplify!(bond′,lattice)
-
-julia> bond′
-Bond:
- • D = 2
- • orbitals = (1, 2)
- • displacement = [-1, 0]
-```
 
 Lastly, given a pair of sites in a finite lattice, it is very easy
 to determine the bond definition connecting the two sites using the
@@ -537,14 +535,16 @@ to determine the bond definition connecting the two sites using the
 
 ```jldoctest honeycomb
 julia> bond_1_2 = sites_to_bond(1, 2, honeycomb, lattice)
-Bond:
- • D = 2
- • orbitals = (1, 2)
- • displacement = [0, 0]
+[[Bond]]
+
+dimensions   = 2
+orbitals     = [1, 2]
+displacement = [0, 0]
 
 julia> bond_1_3 = sites_to_bond(1, 3, honeycomb, lattice)
-Bond:
- • D = 2
- • orbitals = (1, 1)
- • displacement = [1, 0]
+[[Bond]]
+
+dimensions   = 2
+orbitals     = [1, 1]
+displacement = [1, 0]
 ```

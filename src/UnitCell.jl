@@ -69,7 +69,7 @@ function Base.show(io::IO, ::MIME"text/plain", uc::UnitCell{D,T}) where {D,T}
 
     (; n, lattice_vecs, reciprocal_vecs, basis_vecs) = uc
     @printf io "[UnitCell]\n\n"
-    @printf io "dimensions = %\d" D
+    @printf io "dimensions = %d\n" D
     @printf io "orbitals = %d\n\n" n
     @printf io "[UnitCell.lattice_vecs]\n\n"
     for d in axes(lattice_vecs,2)
@@ -83,9 +83,9 @@ function Base.show(io::IO, ::MIME"text/plain", uc::UnitCell{D,T}) where {D,T}
         @printf io "b_%d = %s\n" d string(a)
     end
     @printf io "\n"
-    @printf io "[UnitCell.basis_vecs]\n\n"
+    @printf io "[UnitCell.basis_vecs]\n"
     for d in eachindex(basis_vecs)
-        @printf io "b_%d = %s\n" d string(basis_vecs[d])
+        @printf io "\nb_%d = %s" d string(basis_vecs[d])
     end
     return nothing
 end
@@ -109,8 +109,6 @@ function loc_to_pos!(r::AbstractVector{T}, l, unit_cell::UnitCell{D,T}) where {D
     return nothing
 end
 
-loc_to_pos!(; r, l, unit_cell) = loc_to_pos!(r, l, unit_cell)
-
 """
     loc_to_pos!(r::AbstractVector{T}, l, o::Int, unit_cell::UnitCell{D,T}) where {D,T}
 
@@ -125,8 +123,6 @@ function loc_to_pos!(r::AbstractVector{T}, l, o::Int, unit_cell::UnitCell{D,T}) 
     return nothing
 end
 
-loc_to_pos!(; r, l, o, unit_cell) = loc_to_pos!(r, l, o, unit_cell)
-
 """
     loc_to_pos(l, unit_cell::UnitCell{T}) where {T}
 
@@ -137,25 +133,21 @@ function loc_to_pos(l, unit_cell::UnitCell{D,T}) where {D,T}
     r = zeros(T,D)
     loc_to_pos!(r, l, unit_cell)
 
-    return r
+    return SVector{D,T}(r)
 end
-
-loc_to_pos(; l, unit_cell) = loc_to_pos(l, unit_cell)
 
 """
     loc_to_pos(l, s::Int, unit_cell::UnitCell{D,T}) where {D,T}
 
 Return the position `r` of a orbital `o` at location `l` as a vector or type `SVector{D,T}`.
 """
-function loc_to_pos(l, o::Int, unit_cell::UnitCell{D,T})::SVector{D,T} where {D,T}
+function loc_to_pos(l, o::Int, unit_cell::UnitCell{D,T}) where {D,T}
 
     r = zeros(T,D)
     loc_to_pos!(r,l,o,unit_cell)
 
     return SVector{D,T}(r)
 end
-
-loc_to_pos(; l, o, unit_cell) = loc_to_pos(l, o, unit_cell)
 
 
 """
@@ -195,7 +187,7 @@ orbitals `o_init` and `o_final` in the unit cell respectively, along with a disp
 """
 function displacement_to_vec(Δl, o_init::Int, o_final::Int, unit_cell::UnitCell{D,T})::SVector{D,T} where {D,T}
     
-    Δr = zeros(T,unit_cell.D)
+    Δr = zeros(T, D)
     displacement_to_vec!(Δr, Δl, o_init, o_final, unit_cell)
 
     return SVector{D,T}(Δr)

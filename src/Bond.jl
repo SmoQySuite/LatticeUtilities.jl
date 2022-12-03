@@ -24,7 +24,7 @@ end
 
 Construct a [`Bond`](@ref)
 """
-Bond(orbitals, displacement) = Bond(SVector{2,Int}(orbitals), SVector{length(displacement),Int}(displacement))
+Bond(orbitals, displacement) = Bond(tuple(orbitals...), SVector{length(displacement),Int}(displacement))
 Bond(; orbitals, displacement) = Bond(orbitals, displacement)
 
 
@@ -39,10 +39,10 @@ Base.show(io::IO, bond::Bond{D}) where {D} = print(io, "Bond{$(bond.D)}(orbitals
 function Base.show(io::IO, ::MIME"text/plain", bond::Bond{D}) where {D}
 
     (; orbitals, displacement) = bond
-    @printf io "[Bond]\n\n"
+    @printf io "[[Bond]]\n\n"
     @printf io "dimensions   = %d\n" D
-    @printf io "orbitals     = %s\n" string(orbitals)
-    @printf io "displacement = %s\n" string(displacement)
+    @printf io "orbitals     = [%s]\n" join(orbitals, ", ")
+    @printf io "displacement = %s" string(displacement)
 
     return nothing
 end
