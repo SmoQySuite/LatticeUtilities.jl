@@ -8,7 +8,7 @@ A type defining a finite lattice in `D` dimensions.
 - `N::Int`: Number of unit cells in finite lattice.
 - `L::SVector{D,Int}`: Size of finite lattice in the direction of each lattice vector in unit cells.
 - `periodic::SVector{D,Bool}`: Specifies whether each lattice vector direction hosts periodic or open boundary conditions.
-- `lvec::MVector{D,Int}`: Private temporary storage vector to contain intermediate location and displacement vectors.
+- `lvec::MVector{D,Int}`: (private) Temporary storage vector containing intermediate location and displacement vectors.
 """
 struct Lattice{D}
 
