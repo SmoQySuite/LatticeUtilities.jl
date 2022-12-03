@@ -22,7 +22,7 @@ export Bond
 
 include("utilities.jl")
 export norbits, nsites
-export get_num_sites, valid_site
+export valid_site
 export site_to_unitcell, site_to_orbital
 export site_to_loc!, site_to_loc
 export loc_to_site, site_to_site
