@@ -55,14 +55,14 @@ julia> bond_x = Bond(orbitals = (1,1), displacement = [1,0])
 [[Bond]]
 
 dimensions   = 2
-orbitals     = (1, 1)
+orbitals     = [1, 1]
 displacement = [1, 0]
 
 julia> bond_y = Bond((1,1), [0,1])
 [[Bond]]
 
 dimensions   = 2
-orbitals     = (1, 1)
+orbitals     = [1, 1]
 displacement = [0, 1]
 ```
 
