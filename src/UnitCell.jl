@@ -1,5 +1,5 @@
 @doc raw"""
-    UnitCell{D,n,T<:AbstractFloat,N}
+    UnitCell{D,T<:AbstractFloat,N}
 
 A type defining a unit cell in `D` spatial dimensions.
 
