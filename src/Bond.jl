@@ -35,7 +35,7 @@ Bond(; orbitals, displacement) = Bond(orbitals, displacement)
 
 Show lattice.
 """
-Base.show(io::IO, bond::Bond{D}) where {D} = print(io, "Bond{$(bond.D)}(orbitals=$(bond.orbitals), displacement=$(bond.displacement))")
+Base.show(io::IO, bond::Bond{D}) where {D} = print(io, "Bond{$(D)}(orbitals=$(bond.orbitals), displacement=$(bond.displacement))")
 function Base.show(io::IO, ::MIME"text/plain", bond::Bond{D}) where {D}
 
     (; orbitals, displacement) = bond
