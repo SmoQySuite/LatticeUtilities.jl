@@ -34,5 +34,6 @@ export simplify!
 export sites_to_displacement!, sites_to_displacement
 export sites_to_bond!, sites_to_bond
 export map_neighbor_table
+export translational_avg!
 
 end # module
