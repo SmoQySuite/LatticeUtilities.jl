@@ -265,12 +265,13 @@ sites_to_bond(; s, s′, unit_cell, lattice) = sites_to_bond(s, s′, unit_cell,
 
 
 """
-    calc_k_point!(k_point::AbstractVector{T}, k_loc::AbstractVector{Int},
+    calc_k_point!(k_point::AbstractVector{T}, k_loc,
                   unit_cell::UnitCell{D,T}, lattice::Lattice{D}) where {D,T}
 
-Calculate the k-point `k_point` corresponding to the k-point location `k_loc`.
+Calculate the k-point `k_point` corresponding to the k-point location `k_loc` where
+`k_loc` is a vector of tuple of integers of length `D`.
 """
-function calc_k_point!(k_point::AbstractVector{T}, k_loc::AbstractVector{Int},
+function calc_k_point!(k_point::AbstractVector{T}, k_loc,
                        unit_cell::UnitCell{D,T}, lattice::Lattice{D}) where {D,T}
 
 
