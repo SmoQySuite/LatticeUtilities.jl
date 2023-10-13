@@ -1,7 +1,7 @@
 # Examples
 
 This page includes several examples on how to use the
-[`LatticeUtilities.jl`](https://cohensbw.github.io/LatticeUtilities.jl/dev/) package.
+[`LatticeUtilities.jl`](https://SmoQySuite.github.io/LatticeUtilities.jl/dev/) package.
 
 ## Kagome Lattice
 

@@ -19,5 +19,5 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/cohensbw/LatticeUtilities.jl.git"
+    repo = "github.com/SmoQySuite/LatticeUtilities.jl.git"
 )

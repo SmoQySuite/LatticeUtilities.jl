@@ -1,6 +1,6 @@
 # Getting Started
 
-First the [`LatticeUtilities.jl`](https://cohensbw.github.io/LatticeUtilities.jl/dev/)
+First the [`LatticeUtilities.jl`](https://SmoQySuite.github.io/LatticeUtilities.jl/dev/)
 package needs to be imported.
 
 ```jldoctest getting_started
