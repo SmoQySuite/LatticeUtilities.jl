@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Getting Started · LatticeUtilities.jl</title><meta name="title" content="Getting Started · LatticeUtilities.jl"/><meta property="og:title" content="Getting Started · LatticeUtilities.jl"/><meta property="twitter:title" content="Getting Started · LatticeUtilities.jl"/><meta name="description" content="Documentation for LatticeUtilities.jl."/><meta property="og:description" content="Documentation for LatticeUtilities.jl."/><meta property="twitter:description" content="Documentation for LatticeUtilities.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.svg" alt="LatticeUtilities.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">LatticeUtilities.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li class="is-active"><a class="tocitem" href>Getting Started</a></li><li><a class="tocitem" href="../examples/">Examples</a></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Getting Started</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Getting Started</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/SmoQySuite/LatticeUtilities.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/SmoQySuite/LatticeUtilities.jl/blob/master/docs/src/getting_started.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Getting-Started"><a class="docs-heading-anchor" href="#Getting-Started">Getting Started</a><a id="Getting-Started-1"></a><a class="docs-heading-anchor-permalink" href="#Getting-Started" title="Permalink"></a></h1><p>First the <a href="https://SmoQySuite.github.io/LatticeUtilities.jl/dev/"><code>LatticeUtilities.jl</code></a> package needs to be imported.</p><pre><code class="language-julia-repl hljs">julia&gt; using LatticeUtilities</code></pre><p>As an initial example, we construct an instance of the <a href="../api/#LatticeUtilities.UnitCell"><code>UnitCell</code></a> type to represent the unit cell for a square lattice:</p><pre><code class="language-julia-repl hljs">julia&gt; square = UnitCell(lattice_vecs = [[1.,0.],[0.,1.]],
+                         basis_vecs   = [[0.,0.]])
+[UnitCell]
+
+dimensions = 2
+orbitals = 1
+
+[UnitCell.lattice_vecs]
+
+a_1 = [1.0, 0.0]
+a_2 = [0.0, 1.0]
+
+[UnitCell.reciprocal_vecs]
+
+b_1 = [6.283185307179586, 0.0]
+b_2 = [0.0, 6.283185307179586]
+
+[UnitCell.basis_vecs]
+
+b_1 = [0.0, 0.0]</code></pre><p>Next we construct an instance of the type <a href="../api/#LatticeUtilities.Lattice"><code>Lattice</code></a> that describes the size of a finite lattice for a given unit cell definition. In the example below we assume periodic boundary conditions in the direction of both lattice vectors:</p><pre><code class="language-julia-repl hljs">julia&gt; lattice = Lattice(L = [4,4], periodic = [true,true])
+[Lattice]
+
+dimensions   = 2
+n_unit_cells = 16
+size         = [4, 4]
+periodic     = [true, true]</code></pre><p>Bonds (or edges) in a lattice are represented by the <a href="../api/#LatticeUtilities.Bond"><code>Bond</code></a> type. Considering just nearest neighbors, there are two bonds that need to be defined:</p><pre><code class="language-julia-repl hljs">julia&gt; bond_x = Bond(orbitals = (1,1), displacement = [1,0])
+[[Bond]]
+
+dimensions   = 2
+orbitals     = [1, 1]
+displacement = [1, 0]
+
+julia&gt; bond_y = Bond((1,1), [0,1])
+[[Bond]]
+
+dimensions   = 2
+orbitals     = [1, 1]
+displacement = [0, 1]</code></pre><p>Using these two bond definitions, we can construct the corresponding neighbor table using the <a href="../api/#LatticeUtilities.build_neighbor_table-Union{Tuple{D}, Tuple{Any, UnitCell{D}, Lattice{D}}} where D"><code>build_neighbor_table</code></a> method:</p><pre><code class="language-julia-repl hljs">julia&gt; neighbor_table = build_neighbor_table([bond_x,bond_y], square, lattice)
+2×32 Matrix{Int64}:
+ 1  2  3  4  5  6  7  8   9  10  11  …   8   9  10  11  12  13  14  15  16
+ 2  3  4  1  6  7  8  5  10  11  12     12  13  14  15  16   1   2   3   4</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../examples/">Examples »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="auto">Automatic (OS)</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.1.2 on <span class="colophon-date" title="Tuesday 7 November 2023 18:59">Tuesday 7 November 2023</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
