@@ -1,7 +1,7 @@
 name = "LatticeUtilities"
 uuid = "33fcf0eb-3ae3-43db-bfbc-1d92a3639bd1"
 authors = ["Benjamin Cohen-Stead <benwcs@gmail.com>"]
-version = "2.0.6"
+version = "2.0.7"
 
 [deps]
 FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"

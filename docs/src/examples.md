@@ -201,7 +201,7 @@ is returned by the function [`map_neighbor_table`](@ref):
 
 ```jldoctest kagome
 julia> neighbor_table_map = map_neighbor_table(neighbor_table)
-Dict{Int64, NamedTuple{(:bonds, :neighbors), Tuple{Vector{Int64}, Vector{Int64}}}} with 27 entries:
+Dict{Int64, @NamedTuple{bonds::Vector{Int64}, neighbors::Vector{Int64}}} with 27 entries:
   5  => (bonds = [2, 20, 29, 54], neighbors = [4, 6, 7, 27])
   16 => (bonds = [6, 15, 32, 39], neighbors = [17, 18, 14, 9])
   20 => (bonds = [7, 25, 34, 50], neighbors = [19, 21, 22, 15])

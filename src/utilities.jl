@@ -96,7 +96,7 @@ function site_to_loc(s::Int, unit_cell::UnitCell{D,T}, lattice::Lattice{D}) wher
 
     l = zeros(Int, D)
     o = site_to_loc!(l, s, unit_cell, lattice)
-    return (SVector{D,T}(l), o)
+    return (SVector{D,Int}(l), o)
 end
 
 site_to_loc(; s, unit_cell, lattice) = site_to_loc(s, unit_cell, lattice)
@@ -424,7 +424,11 @@ function build_neighbor_table(bond::Bond{D}, unit_cell::UnitCell{D}, lattice::La
         end
     end
 
-    return hcat(neighbor_table...)
+    if isempty(neighbor_table)
+        return zeros(Int, 2, 0)
+    else
+        return hcat(neighbor_table...)
+    end
 end
 
 """
